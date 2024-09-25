@@ -1,0 +1,7 @@
+.pattern {
+  background: radial-gradient(circle at top left, transparent 9%, #de6a0a 10%, #de6a0a 15%, transparent 16%), radial-gradient(circle at bottom left, transparent 9%, #de6a0a 10%, #de6a0a 15%, transparent 16%), radial-gradient(circle at top right, transparent 9%, #de6a0a 10%, #de6a0a 15%, transparent 16%), radial-gradient(circle at bottom right, transparent 9%, #de6a0a 10%, #de6a0a 15%, transparent 16%), radial-gradient(circle, transparent 25%, #F18240 26%), linear-gradient(0deg, transparent 44%, #de6a0a 45%, #de6a0a 55%, transparent 56%), linear-gradient(90deg, transparent 44%, #de6a0a 45%, #de6a0a 55%, transparent 56%);
+  background-size: 2em 2em;
+  background-color: #F18240;
+  opacity: 1
+}
+
