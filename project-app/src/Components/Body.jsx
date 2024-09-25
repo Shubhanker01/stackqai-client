@@ -9,7 +9,7 @@ export default function Body() {
                 <img src="https://mir-s3-cdn-cf.behance.net/project_modules/fs/200e8d139737079.6234b0487404d.gif" alt="..." className=""></img>
                 <div className="w-full">
                     <h1 className="text-4xl overflow-hidden animate-typing border-r-white h-[45px] mt-[50px]" id="typewriter">Get started by typing your queries</h1>
-                    <Link to="/signup" className="bg-indigo-800 text-xl mt-[10px] p-4 rounded-md text-slate-200 relative top-[40px] left-[150px]  shadow-lg font-bold">Get Started</Link>
+                    <Link to="/signup" className="bg-indigo-800 text-xl mt-[10px] p-4 rounded-md text-slate-200 relative top-[40px] left-[150px]  shadow-lg">Get Started</Link>
                 </div>
             </div>
         </>

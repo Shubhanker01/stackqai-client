@@ -1,10 +1,11 @@
 import { useState } from "react"
+import Addchat from "./Addchat"
 import Settings from "./Settings"
 import UserChat from "./UserChat"
 import Intro from "./Intro"
 import Chatbot from "./Chatbot"
 import UserProfile from "./UserProfile"
-import { Link, useLocation } from "react-router-dom"
+import { useLocation } from "react-router-dom"
 
 let id = 0
 
@@ -16,9 +17,8 @@ export default function Main() {
     const [question, setQuestion] = useState("")
     const [arr, setArr] = useState([])
     const [state, setState] = useState(false)
-    // const [ans, setAns] = useState("")
-    const email = data.email
-
+    const [ans, setAns] = useState("")
+    const [email, getEmail] = useState(data.email)
 
     const getAPI = async () => {
         let headersList = {
@@ -28,29 +28,32 @@ export default function Main() {
         let bodyContent = JSON.stringify({
             "ques": question
         });
-
         let response = await fetch("http://127.0.0.1:5000/question", {
             method: "POST",
             body: bodyContent,
             headers: headersList
         });
         let data = await response.text();
-        let bodyContent1 = JSON.stringify({
-            "email": email,
-            "question": question,
-            "answer": data,
-            "date": Date
-        })
-        let data2 = await fetch('http://localhost:9000/quesans', {
-            method: 'POST',
-            body: bodyContent1,
-            headers: headersList
-        })
-        let res = await data2.text()
-        console.log(res)
-        setArr([...arr, { id: id++, ques: question, ans: data }])
+        setAns(data)
     }
 
+    const saveQues = async () => {
+        let headersList = {
+            "Accept": "*/*",
+            "Content-Type": "application/json"
+        }
+        let bodyContent = JSON.stringify({
+            "email": email,
+            "question": question
+        })
+        let response = await fetch("http://localhost:9000/ques", {
+            method: 'POST',
+            headers: headersList,
+            body: bodyContent
+        })
+        let data = await response.text()
+        console.log(data)
+    }
 
     const handleChange = (e) => {
         setQuestion(e.target.value)
@@ -58,9 +61,10 @@ export default function Main() {
     }
 
     const handleClick = () => {
-        setArr([...arr, { id: id++, ques: question, ans: "" }])
-        getAPI()
+        setArr([...arr, { id: id++, ques: question }])
         setState(true)
+        getAPI()
+        saveQues()
         setQuestion("")
         // var ele = document.getElementById('chatbox')
         // ele.scrollTop = ele.scrollHeight
@@ -80,35 +84,23 @@ export default function Main() {
             <div className="w-full bg-gray-50 h-screen">
                 {
                     toggle == "on" ?
-                        <div className="fixed top-[0px] left-[0px] w-[200px] bg-gray-800 h-screen transition-[width] duration-700 z-30">
-                            <div className="relative left-[15px] top-[15px] cursor-pointer" onClick={() => changeToggle()}>
-                                <div className="mb-[3px] w-[25px] h-[5px] bg-slate-100"></div>
-                                <div className="mb-[3px] w-[25px] h-[5px] bg-slate-100"></div>
-                                <div className=" w-[25px] h-[5px] bg-slate-100"></div>
+                        <div className="fixed top-[0px] left-[0px] w-[200px] cursor-pointer bg-gray-600 h-screen transition-[width] duration-700 z-10">
+                            <div className="relative left-[10px] top-[10px]" onClick={() => changeToggle()}>
+                                <div className="mb-[3px] w-[25px] h-[5px] bg-yellow-400"></div>
+                                <div className="mb-[3px] w-[25px] h-[5px] bg-yellow-400"></div>
+                                <div className=" w-[25px] h-[5px] bg-yellow-400"></div>
 
                             </div>
-                            <div className="relative top-[115px] left-[10px] h-[80px]">
-                                <Link to='/history' state={{ email: data.email }}>
-                                    <div className="flex">
-                                        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAAEz0lEQVR4nO1ayY4cRRBNMItB2Aaxn0A2PvED7KuxOGEQi4yAyxi42HDhYI4cDHwDi0AGBqTBY0CsHsC2ABmEudgy9pg5jDQHJDRNd2ZV5RLFIdDLzhoX9PSe3V0WPKk0rcmqyHodkZERL1uI/wKUdu8rQ/vF2Q6laQFXL/fW6/UNMrVbEuNeVCZ/U2n6Wpn8F6nplNR0Ep8b2s0pk7+Be2Rq72PmDZUgwswXKO0ekNq9lRiaL+7v9ZKaTkvt9ja0e2hxkdeOnchvzBeqjKakdj+UXupXpd17Uue78G1LyxvhJWY+D5f3mLWb/JjOd0qdv6O0O7HyvKEfE0vPLC0tXTQWIvXE3Kk0fVMi8GlqaDtetF/7fzBfkmj3sMxoX8lThxGiIyPivaDppdI3+HkjtXcx8zlR5jLmZpnRbGG/oenVaN5Z+ZaUulyZfLYIocTS08y8RkQGM58rDT0utTu24m3mq4Y2XHK3DyWp3cE0pRvFiCEtb4THw5yHG9ZeP5TBf2QYQ5+lKV89qI1+n2Pmi5HRgme+z7Ls2n5ttLxE9yv/IDYRACnZb8ohzAZO0b0SaWg3EiJArVZbLzV9Eey8LCaFYYkAfv/R7jjspPave8TZSgSQhp4Ii/9QTyGGDe/3JLlSVIzIzAyvQQHrQzmjHd0XV+aOKpMfz7LsGlEhIkBi8lu9VzJ3BBu0aAdp6DE/saEPRSTEJAIUu3+i3TbRDlK7d7veNGkihh4Na+XtTmkOvcOp5WVeV1Uiy8u8zpdJhubxzi03SGvv996w+V4REbGJAGgXvFdWq5KVcS80J3XPi4oTkTrf5b90k+9unbDZni7IzG6tPJHMbg3r5PXWCQ3N+UFrN1WeiLU3hNJornXQ0E/eXUlyRawJ/1TmloIIPseyK5kv83Yz93ProO+5aQGCQrQJtTtYKi6/jWWXvejRbPJWmZROBiLnx5gMZQ5Seam3/06Mg4hCaYK4Y740Bgml3YEw2TxI1I25Q4wjtBQEtQiLvUwCf2MWoAWUc5vbLnYogH7Q2nvFgECiKJogTBJFOOicfl9rGfRSpx/Md4qKeqKA1PlzoQre3ZblICXKuDxRQGk33TZ6ICg39Vt3AgqgqKAnSsVt+6IRKOSXRLtHRI9QGT01LhLlngnCuWgHqOLN2KN9og8oQ0+OgwRQKJ4deya0j2gjg1Z1k6gYEpPf3iRBR7oKEInOnw3t7n5osaIiYOjChcid0VTXB6CAQ9r3GpKh7aIiUGEton7rWXFE5xUeOgZBWUwYCju5yQuB7u6+Hsb5RHEOErOH7xe1Wm290vRlKD739G0AIQbhOKTW6ZGe8bXB4iKvha4cMuknA78DdmicTxRaV4zKuD9PuKDEu0MJ83DpHYcsBRmUIbFb4Q6t7FcFibox10Ux3PRMM8ygikNQHkVqnoG+i+wUFjbCaWhPrH7oQq+stK6GPoIWG8t+YvLbpKGPS63xnpGuS5xPwN1nCOWzkDEHyWy+AETtFMoOVZxT9ptih8omGe04U8786wcDaAmc24zkAA0AFz7jfxhrCmxuuhA8CoVdZTQ1iezoa7OGdg9CUB7kJxx4xv/8Q7ttHY8JxgkfJqndgq4NCqDvUTJ3FOqMV2i8uOEOYAz3oCma5Eb7P8SI8TdKD0IBNSfnegAAAABJRU5ErkJggg==" className="h-[35px] w-[35px]" />
-                                        <p className="text-slate-50 pl-[15px] pt-[5px]">History</p>
-                                    </div>
-                                </Link>
-                            </div>
-
+                            <Addchat toggle={toggle}></Addchat>
                             <Settings toggle={toggle}></Settings>
                         </div> :
-                        <div className="fixed top-[0px] left-[0px] w-[65px]  bg-gray-800 h-screen transition-[width] duration-700 z-30">
-                            <div className="relative left-[15px] top-[15px] cursor-pointer" onClick={() => changeToggle()}>
-                                <div className="mb-[3px] w-[25px] h-[5px] bg-slate-100"></div>
-                                <div className="mb-[3px] w-[25px] h-[5px] bg-slate-100"></div>
-                                <div className=" w-[25px] h-[5px] bg-slate-100"></div>
+                        <div className="fixed top-[0px] left-[0px] w-[65px] cursor-pointer bg-gray-600 h-screen transition-[width] duration-700 z-10">
+                            <div className="relative left-[10px] top-[10px]" onClick={() => changeToggle()}>
+                                <div className="mb-[3px] w-[25px] h-[5px] bg-yellow-400"></div>
+                                <div className="mb-[3px] w-[25px] h-[5px] bg-yellow-400"></div>
+                                <div className=" w-[25px] h-[5px] bg-yellow-400"></div>
                             </div>
-                            <div className="relative top-[115px] left-[10px] h-[80px]">
-                                <Link to='/history' state={{ email: data.email }}>
-                                    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAAEz0lEQVR4nO1ayY4cRRBNMItB2Aaxn0A2PvED7KuxOGEQi4yAyxi42HDhYI4cDHwDi0AGBqTBY0CsHsC2ABmEudgy9pg5jDQHJDRNd2ZV5RLFIdDLzhoX9PSe3V0WPKk0rcmqyHodkZERL1uI/wKUdu8rQ/vF2Q6laQFXL/fW6/UNMrVbEuNeVCZ/U2n6Wpn8F6nplNR0Ep8b2s0pk7+Be2Rq72PmDZUgwswXKO0ekNq9lRiaL+7v9ZKaTkvt9ja0e2hxkdeOnchvzBeqjKakdj+UXupXpd17Uue78G1LyxvhJWY+D5f3mLWb/JjOd0qdv6O0O7HyvKEfE0vPLC0tXTQWIvXE3Kk0fVMi8GlqaDtetF/7fzBfkmj3sMxoX8lThxGiIyPivaDppdI3+HkjtXcx8zlR5jLmZpnRbGG/oenVaN5Z+ZaUulyZfLYIocTS08y8RkQGM58rDT0utTu24m3mq4Y2XHK3DyWp3cE0pRvFiCEtb4THw5yHG9ZeP5TBf2QYQ5+lKV89qI1+n2Pmi5HRgme+z7Ls2n5ttLxE9yv/IDYRACnZb8ohzAZO0b0SaWg3EiJArVZbLzV9Eey8LCaFYYkAfv/R7jjspPave8TZSgSQhp4Ii/9QTyGGDe/3JLlSVIzIzAyvQQHrQzmjHd0XV+aOKpMfz7LsGlEhIkBi8lu9VzJ3BBu0aAdp6DE/saEPRSTEJAIUu3+i3TbRDlK7d7veNGkihh4Na+XtTmkOvcOp5WVeV1Uiy8u8zpdJhubxzi03SGvv996w+V4REbGJAGgXvFdWq5KVcS80J3XPi4oTkTrf5b90k+9unbDZni7IzG6tPJHMbg3r5PXWCQ3N+UFrN1WeiLU3hNJornXQ0E/eXUlyRawJ/1TmloIIPseyK5kv83Yz93ProO+5aQGCQrQJtTtYKi6/jWWXvejRbPJWmZROBiLnx5gMZQ5Seam3/06Mg4hCaYK4Y740Bgml3YEw2TxI1I25Q4wjtBQEtQiLvUwCf2MWoAWUc5vbLnYogH7Q2nvFgECiKJogTBJFOOicfl9rGfRSpx/Md4qKeqKA1PlzoQre3ZblICXKuDxRQGk33TZ6ICg39Vt3AgqgqKAnSsVt+6IRKOSXRLtHRI9QGT01LhLlngnCuWgHqOLN2KN9og8oQ0+OgwRQKJ4deya0j2gjg1Z1k6gYEpPf3iRBR7oKEInOnw3t7n5osaIiYOjChcid0VTXB6CAQ9r3GpKh7aIiUGEton7rWXFE5xUeOgZBWUwYCju5yQuB7u6+Hsb5RHEOErOH7xe1Wm290vRlKD739G0AIQbhOKTW6ZGe8bXB4iKvha4cMuknA78DdmicTxRaV4zKuD9PuKDEu0MJ83DpHYcsBRmUIbFb4Q6t7FcFibox10Ux3PRMM8ygikNQHkVqnoG+i+wUFjbCaWhPrH7oQq+stK6GPoIWG8t+YvLbpKGPS63xnpGuS5xPwN1nCOWzkDEHyWy+AETtFMoOVZxT9ptih8omGe04U8786wcDaAmc24zkAA0AFz7jfxhrCmxuuhA8CoVdZTQ1iezoa7OGdg9CUB7kJxx4xv/8Q7ttHY8JxgkfJqndgq4NCqDvUTJ3FOqMV2i8uOEOYAz3oCma5Eb7P8SI8TdKD0IBNSfnegAAAABJRU5ErkJggg==" className="h-[35px] w-[35px]" />
-                                </Link>
-                            </div>
+                            <Addchat toggle={toggle}></Addchat>
                             <Settings toggle={toggle}></Settings>
                         </div>
                 }
@@ -127,11 +119,11 @@ export default function Main() {
                         </div>
                 }
 
-                <div className="grid grid-cols-2 fixed w-full top-[5px] z-20">
+                <div className="grid grid-cols-2 fixed w-full top-[5px]">
 
                     <div className="flex">
                         <h1 className="font-bold text-3xl text-[#222426] ml-[220px]  mt-[20px]">StackQ AI</h1>
-                        <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="35" height="35" viewBox="0 0 48 48" className="mt-[20px] ml-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="35" height="35" viewBox="0 0 48 48" className="mt-[25px] ml-2">
                             <polygon fill="#3dd9eb" points="41,43 7,43 7,28 11,28 11,39 37,39 37,28 41,28"></polygon><rect width="20" height="4" x="14" y="32" fill="#f5bc00"></rect><rect width="3.999" height="18.973" x="22.743" y="17.19" fill="#f5bc00" transform="rotate(-77.379 24.743 26.678)"></rect><rect width="4" height="19.022" x="24.812" y="10.629" fill="#f5bc00" transform="rotate(-64.196 26.812 20.14)"></rect><rect width="4" height="19.015" x="28.478" y="4.617" fill="#f5bc00" transform="rotate(-49.892 30.48 14.126)"></rect><rect width="4" height="19.1" x="33.75" y="-.425" fill="#f5bc00" transform="rotate(-37.022 35.749 9.126)"></rect><rect width="4" height="4" x="7" y="39" fill="#00b3d7"></rect><rect width="4" height="4" x="37" y="39" fill="#00b3d7"></rect>
                         </svg>
                     </div>
@@ -153,7 +145,7 @@ export default function Main() {
                                         arr.map((ques) => (
                                             <li key={ques.id} className="relative mb-[25px]">
                                                 <UserChat chat={ques.ques}></UserChat>
-                                                <Chatbot loader={true} answer={ques.ans}></Chatbot>
+                                                <Chatbot loader={true} answer={ans}></Chatbot>
                                             </li>
                                         ))
                                     }

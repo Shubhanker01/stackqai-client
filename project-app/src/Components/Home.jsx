@@ -14,9 +14,9 @@ export default function Home() {
 
       <div className="justify-self-end">
 
-        <Link to="/login" className="bg-sky-400 text-lg m-2 p-2 relative top-3 rounded-md text-sky-50 font-bold">Log In</Link>
+        <Link to="/login" className="bg-green-600 text-xl m-2 p-2 relative top-3 rounded-md">Log In</Link>
 
-        <Link to="/signup" className="bg-sky-400 text-lg m-2 p-2 relative top-3 rounded-md text-sky-50 font-bold">Sign Up</Link>
+        <Link to="/signup" className="bg-orange-200 text-xl m-2 p-2 relative top-3 rounded-md">Sign Up</Link>
       </div>
       <Body></Body>
     </div>

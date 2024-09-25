@@ -71,7 +71,7 @@ export default function Signup() {
                         </div>
 
                     </form>
-                    <p className="text-center text-gray-800 text-xs">
+                    <p className="text-center text-gray-500 text-xs">
                         &copy;2024 StackQ AI. All rights reserved.
                     </p>
                 </div>
