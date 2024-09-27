@@ -8,6 +8,8 @@ import UserProfile from "./UserProfile"
 import { useLocation } from "react-router-dom"
 
 let id = 0
+let quesid = 1
+let ansid = 2
 
 export default function Main() {
     const location = useLocation()
@@ -61,7 +63,7 @@ export default function Main() {
     }
 
     const handleClick = () => {
-        setArr([...arr, { id: id++, ques: question }])
+        setArr([...arr, { id: id++, ques: question, quesid: quesid++, ansid: ansid++ }])
         setState(true)
         getAPI()
         saveQues()
@@ -109,11 +111,11 @@ export default function Main() {
                 {
                     press == "" ?
                         <div className="">
-                            <input type="text" id="search" placeholder="Enter a prompt here" className="fixed left-[85px] bottom-[15px] z-10 rounded-full border-zinc-700 border-2 p-[2px] text-slate-950 placeholder:text-slate-950 w-[80%] h-[40px]" value={question} onChange={handleChange}></input>
+                            <input type="text" id="search" placeholder="Enter a prompt here" className="fixed left-[85px] bottom-[15px] z-10 rounded-full border-zinc-700 border-2 p-[2px] text-slate-950 placeholder:text-slate-950 text-sm w-[70%] h-[40px]" value={question} onChange={handleChange}></input>
                         </div> :
                         <div className="">
-                            <input type="text" id="search" placeholder="Enter a prompt here" className="fixed left-[85px] bottom-[15px] z-10 rounded-full border-zinc-700 border-2 p-[2px] text-slate-950 placeholder:text-slate-950 z-10 w-[80%] h-[40px]" value={question} onChange={handleChange}></input>
-                            <button className="fixed right-[80px] bottom-[25px] h-[35px] w-[35px] cursor-pointer z-10" onClick={() => handleClick()}>
+                            <input type="text" id="search" placeholder="Enter a prompt here" className="fixed left-[85px] bottom-[15px] z-10 rounded-full border-zinc-700 border-2 p-[2px] text-slate-950 placeholder:text-slate-950 text-sm z-10 w-[70%] h-[40px]" value={question} onChange={handleChange}></input>
+                            <button className="fixed right-[35px] bottom-[18px] h-[35px] w-[35px] cursor-pointer z-10" onClick={() => handleClick()}>
                                 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAACSElEQVR4nO2az0ocQRDGf6eMOSQoGM0tHnPQk97MMSiBhHg0+gwS8S38c1ASCLnmERIX4xtIyDmuq6eoCYp61hgsaShBhpnZ3ZmumR7xgw8Gdre7Pr7u3qrqgXvcXfQBU8Ay0ACawBlwoXTP2/qZ+85boJdAEAGzwCbwH5Au6X6zAczoWKXjIbAAHOYIPo0HwDzQU5aIV8CeRwFx7gKTlgKc9WuGAuL8os57xSDws0QRovwBDPgSMaR2S0VsaQyF8ESPUamYe8DTvCJ6KlpOkrHMch3RnwIIXmL8kOeIlUA50akIZ99OAAFLCnc7/dNc8DDZODAGHBmJed+JGz7SjlEdb9hIzH67jT/raaIjFWEp5l2WkE2PEx0DIzruc+CPZyGNrHoiTypelTOXwOMkIVMG9ls78zpJyIqREEtnlpKENAyFWDnzNUlIy1iIhTPNJCGnJQjx7cxxkpCLkoTEnRkrMM75nRZyWtHS+ut7ae3UcLNvh3D8FnFCso7f5Ro5IcrFKlMUH05IVorSW7Ok8V9a0ujwvSZOCLBOBmZq4IQop7OERNoVD73U/Q08oA3mPUz0wrj5MNdOxI0rIbRJJYWtbjqOkwEELAm8Al7SJT4GELjEuEoORNo4lkC41ckGT0N/QNcKgxTEUEllcBpdVv4MTxioaJlt6WWTyWXoVUkiPlvfvU8YL7VmniM2LyJt7e97TjvmqnoDItKueEN7sd0Gf6lZ7HSRo9U3XG3wRtuY37SePrn1Uo17/qXl6aIWRY+8R3EPwsA1oBk5SAaWVBQAAAAASUVORK5CYII=" />
                             </button>
                         </div>
@@ -140,13 +142,15 @@ export default function Main() {
                             </div>
                             :
                             <div className="">
-                                <ul className="absolute top-[100px] left-[300px] w-[850px] h-[70%] flex flex-col overflow-auto  scroll-auto" id="chatbox">
+                                <ul className="absolute top-[100px] left-[80px] w-[80%] h-[70%] flex flex-col overflow-auto  scroll-auto" id="chatbox">
                                     {
                                         arr.map((ques) => (
+
                                             <li key={ques.id} className="relative mb-[25px]">
-                                                <UserChat chat={ques.ques}></UserChat>
-                                                <Chatbot loader={true} answer={ans}></Chatbot>
+                                                <UserChat chat={ques.ques} key={ques.quesid}></UserChat>
+                                                <Chatbot loader={true} ques={ques.ques} answer={ans} key={ques.ansid}></Chatbot>
                                             </li>
+
                                         ))
                                     }
                                 </ul>
