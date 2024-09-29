@@ -1,26 +1,61 @@
 
 import { Link, useNavigate } from "react-router-dom"
 import { useState } from "react"
-import {ToastContainer,toast} from "react-toastify"
+import { ToastContainer, toast } from "react-toastify"
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Signup() {
     const navigate = useNavigate()
-    let [name,setName] = useState("")
-    let [email,setEmail] = useState("")
-    let [password,setPassword] = useState("")
-    let [confPassword,setconfPassword] = useState("")
+    let [name, setName] = useState("")
+    let [email, setEmail] = useState("")
+    let [password, setPassword] = useState("")
+    let [confPassword, setconfPassword] = useState("")
 
-    const signup = async()=>{
-        if(name != "" && email!=""&&password!=""&&confPassword!=""){
-
+    const signupApi = async () => {
+        let headersList = {
+            "Accept": "*/*",
+            "Content-Type": "application/json"
         }
-        else{
-           toast("Please enter all the fields")
+        let bodyContent = JSON.stringify({
+            "name": name,
+            "email": email,
+            "password": password
+        });
+
+        let response = await fetch("http://localhost:9000/user/signup", {
+            method: "POST",
+            body: bodyContent,
+            headers: headersList
+        });
+
+        let data = await response.json();
+        return data
+    }
+
+    const signup = async () => {
+        if (name != "" && email != "" && password != "" && confPassword != "") {
+            if (password == confPassword) {
+                signupApi().then((res) => {
+                    if (res.message == "Success") {
+                        toast.success("You have successfully signed in", { position: 'top-center' })
+                    }
+                    else {
+                        toast.error("This email already exists", { position: 'top-center' })
+                    }
+                }).catch(err => console.log(err))
+            }
+            else {
+                toast.error("Please enter correct password", { position: 'top-center' })
+            }
+        }
+        else {
+            toast.error("Please enter all the fields", { position: 'top-center' })
         }
     }
 
     return (
         <>
+            <ToastContainer />
             <div className="bg-[#f1f2f3] h-full absolute w-full">
                 <Link to="/">
                     <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="50" height="50" viewBox="0 0 48 48" className="m-auto mt-2">
@@ -34,26 +69,26 @@ export default function Signup() {
                             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="username">
                                 Name
                             </label>
-                            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="username" type="text" placeholder="" value={name} onChange={(e)=>setName(e.target.value)}/>
+                            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="username" type="text" placeholder="" value={name} onChange={(e) => setName(e.target.value)} />
                         </div>
                         <div className="mb-2">
                             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
                                 Email
                             </label>
-                            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="email" type="email" placeholder="" value={email} onChange={e=> setEmail(e.target.value)}/>
+                            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="email" type="email" placeholder="" value={email} onChange={e => setEmail(e.target.value)} />
                         </div>
                         <div className="mb-2">
                             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
                                 Password
                             </label>
-                            <input className="shadow appearance-none border border-black-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" placeholder="" value={password} onChange={e=> setPassword(e.target.value)}/>
+                            <input className="shadow appearance-none border border-black-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" placeholder="" value={password} onChange={e => setPassword(e.target.value)} />
 
                         </div>
                         <div className="mb-2">
                             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="conf-password">
                                 Confirm Password
                             </label>
-                            <input className="shadow appearance-none border border-black-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="conf-password" type="password" placeholder="" value={confPassword} onChange={e=> setconfPassword(e.target.value)}/>
+                            <input className="shadow appearance-none border border-black-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="conf-password" type="password" placeholder="" value={confPassword} onChange={e => setconfPassword(e.target.value)} />
 
                         </div>
                         <div className="w-[256px]">
@@ -68,7 +103,7 @@ export default function Signup() {
                     </p>
                 </div>
             </div>
-            <ToastContainer/>
+
         </>
     )
 }
