@@ -1,38 +1,22 @@
 
 import { Link, useNavigate } from "react-router-dom"
-import { GoogleLogin } from "@react-oauth/google"
-import { jwtDecode } from 'jwt-decode'
-
+import { useState } from "react"
+import {ToastContainer,toast} from "react-toastify"
 
 export default function Signup() {
     const navigate = useNavigate()
-    const resposeMessage = async (response) => {
-        const token = response.credential
-        const decoded = jwtDecode(token)
-        let headersList = {
-            "Accept": "*/*",
-            "Content-Type": "application/json"
+    let [name,setName] = useState("")
+    let [email,setEmail] = useState("")
+    let [password,setPassword] = useState("")
+    let [confPassword,setconfPassword] = useState("")
+
+    const signup = async()=>{
+        if(name != "" && email!=""&&password!=""&&confPassword!=""){
+
         }
-
-        let bodyContent = JSON.stringify({
-            "name": `${decoded.given_name} ${decoded.family_name}`,
-            "email": decoded.email,
-            "is_verified": decoded.email_verified
-        });
-
-        await fetch("http://localhost:9000/user", {
-            method: "POST",
-            body: bodyContent,
-            headers: headersList
-        }).then(res => {
-            navigate('/redirect', { state: { name: `${decoded.given_name} ${decoded.family_name}`, email: decoded.email, img: decoded.picture } })
-        }).catch(err => {
-            console.log(err)
-        })
-
-    }
-    const errMessage = (err) => {
-        console.log(err)
+        else{
+           toast("Please enter all the fields")
+        }
     }
 
     return (
@@ -47,49 +31,44 @@ export default function Signup() {
                 <div className="w-full max-w-xs m-auto mt-[50px]">
                     <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
                         <div className="mb-2">
-                            <label className="block text-gray-700 text-sm font-bold mb-2" for="username">
+                            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="username">
                                 Name
                             </label>
-                            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="username" type="text" placeholder="" />
+                            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="username" type="text" placeholder="" value={name} onChange={(e)=>setName(e.target.value)}/>
                         </div>
                         <div className="mb-2">
-                            <label className="block text-gray-700 text-sm font-bold mb-2" for="email">
+                            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
                                 Email
                             </label>
-                            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="email" type="email" placeholder="" />
+                            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="email" type="email" placeholder="" value={email} onChange={e=> setEmail(e.target.value)}/>
                         </div>
                         <div className="mb-2">
-                            <label className="block text-gray-700 text-sm font-bold mb-2" for="password">
+                            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
                                 Password
                             </label>
-                            <input className="shadow appearance-none border border-black-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" placeholder="" />
+                            <input className="shadow appearance-none border border-black-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" placeholder="" value={password} onChange={e=> setPassword(e.target.value)}/>
 
                         </div>
                         <div className="mb-2">
-                            <label className="block text-gray-700 text-sm font-bold mb-2" for="conf-password">
+                            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="conf-password">
                                 Confirm Password
                             </label>
-                            <input className="shadow appearance-none border border-black-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="conf-password" type="password" placeholder="" />
+                            <input className="shadow appearance-none border border-black-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="conf-password" type="password" placeholder="" value={confPassword} onChange={e=> setconfPassword(e.target.value)}/>
 
                         </div>
                         <div className="w-[256px]">
-                            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline m-auto w-full" type="button">
+                            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline m-auto w-full" type="button" onClick={signup}>
                                 Sign Up
                             </button>
 
                         </div>
-                        <p className="text-center p-4">Or sign up using</p>
-                        <div className="ml-[20px] w-[256px]">
-                            <GoogleLogin onSuccess={resposeMessage} onError={errMessage}></GoogleLogin>
-                        </div>
-
                     </form>
                     <p className="text-center text-gray-500 text-xs">
                         &copy;2024 StackQ AI. All rights reserved.
                     </p>
                 </div>
             </div>
-
+            <ToastContainer/>
         </>
     )
 }
