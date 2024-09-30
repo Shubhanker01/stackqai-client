@@ -1,11 +1,15 @@
 import { useState } from "react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { ToastContainer, toast } from "react-toastify"
 import 'react-toastify/dist/ReactToastify.css';
+import Cookies from "universal-cookie"
+
 
 export default function Login() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const navigate = useNavigate()
+  const cookies = new Cookies(null, { path: '/main' })
 
   const loginApi = async () => {
     let headersList = {
@@ -27,22 +31,31 @@ export default function Login() {
     let data = await response.json();
     return data
   }
+
   const login = () => {
-    loginApi().then((res) => {
-      if (res.message == "Invalid email") {
-        toast.error("Email does not exists", { position: 'top-center' })
-      }
-      else if (res.message == "Error") {
-        toast.error("Password does not match", { position: 'top-center' })
-      }
-      else {
-        toast.success("You have successfully logged in", { position: 'top-center' })
-        console.log(res.token)
-      }
-    })
+    if (email != "" && password != "") {
+      loginApi().then((res) => {
+        if (res.message == "Invalid email") {
+          toast.error("Email does not exists", { position: 'top-center' })
+        }
+        else if (res.message == "Error") {
+          toast.error("Password does not match", { position: 'top-center' })
+        }
+        else {
+          toast.success("You have successfully logged in", { position: 'top-center' })
+          cookies.set('token', res.token)
+          navigate('/main')
+        }
+      })
+    }
+    else {
+      toast.error("Please enter all the fields", { position: 'top-center' })
+    }
+
   }
   return (
     <>
+      <ToastContainer />
       <div className="bg-[#f1f2f3] h-full absolute w-full">
         <Link to="/">
           <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="50" height="50" viewBox="0 0 48 48" className="m-auto mt-2">
@@ -53,26 +66,24 @@ export default function Login() {
         <div className="w-full max-w-xs m-auto mt-[140px]">
           <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
             <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2" for="email">
+              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
                 Email
               </label>
-              <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="email" type="email" placeholder="" value={email} onChange={e=>setEmail(e.target.value)}/>
+              <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="email" type="email" placeholder="" value={email} onChange={e => setEmail(e.target.value)} />
             </div>
             <div className="mb-6">
-              <label className="block text-gray-700 text-sm font-bold mb-2" for="password">
+              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
                 Password
               </label>
-              <input className="shadow appearance-none border border-black-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" placeholder="" value={password} onChange={e=>setPassword(e.target.value)}/>
-              {/* <p className="text-red-500 text-xs italic">Please choose a password.</p> */}
+              <input className="shadow appearance-none border border-black-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" placeholder="" value={password} onChange={e => setPassword(e.target.value)} />
             </div>
-            <div className="flex items-center justify-between">
-              <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
-                Log In
-              </button>
-              {/* <a className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800" href="#">
+
+            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-[256px]" type="button" onClick={login}>
+              Log In
+            </button>
+            {/* <a className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800" href="#">
                 Forgot Password?
               </a> */}
-            </div>
           </form>
           <p className="text-center text-gray-500 text-xs">
             &copy;2024 StackQ AI. All rights reserved.

@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom"
 import { useState } from "react"
 import { ToastContainer, toast } from "react-toastify"
 import 'react-toastify/dist/ReactToastify.css';
+import Cookies from "universal-cookie"
 
 export default function Signup() {
     const navigate = useNavigate()
@@ -10,6 +11,7 @@ export default function Signup() {
     let [email, setEmail] = useState("")
     let [password, setPassword] = useState("")
     let [confPassword, setconfPassword] = useState("")
+    const cookies = new Cookies(null, { path: '/main' })
 
     const signupApi = async () => {
         let headersList = {
@@ -38,6 +40,8 @@ export default function Signup() {
                 signupApi().then((res) => {
                     if (res.message == "Success") {
                         toast.success("You have successfully signed in", { position: 'top-center' })
+                        cookies.set('token', res.token)
+                        navigate('/main')
                     }
                     else {
                         toast.error("This email already exists", { position: 'top-center' })

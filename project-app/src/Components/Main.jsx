@@ -5,22 +5,24 @@ import UserChat from "./UserChat"
 import Intro from "./Intro"
 import Chatbot from "./Chatbot"
 import UserProfile from "./UserProfile"
-import { useLocation } from "react-router-dom"
+import Cookies from 'universal-cookie';
+import { jwtDecode } from "jwt-decode";
+import Logout from "./Logout"
 
 let id = 0
 let quesid = 10000
 let ansid = 30000
 
 export default function Main() {
-    const location = useLocation()
-    const data = location.state
+
     const [toggle, setToggle] = useState("off")
     const [press, setPress] = useState("")
     const [question, setQuestion] = useState("")
     const [arr, setArr] = useState([])
     const [state, setState] = useState(false)
     const [ans, setAns] = useState("")
-    const [email, getEmail] = useState(data.email)
+    const cookies = new Cookies()
+    const decoded = jwtDecode(cookies.get('token'))
 
     const getAPI = async () => {
         let headersList = {
@@ -37,7 +39,7 @@ export default function Main() {
         });
         let data = await response.text();
         setAns(data)
-        setArr([...arr, { id: id++, ques: question, quesid: quesid++, ansid: ansid++,ans:data }])
+        setArr([...arr, { id: id++, ques: question, quesid: quesid++, ansid: ansid++, ans: data }])
     }
 
     const saveQues = async () => {
@@ -46,7 +48,7 @@ export default function Main() {
             "Content-Type": "application/json"
         }
         let bodyContent = JSON.stringify({
-            "email": email,
+            "email": decoded.email,
             "question": question
         })
         let response = await fetch("http://localhost:9000/ques", {
@@ -64,7 +66,7 @@ export default function Main() {
     }
 
     const handleClick = () => {
-        setArr([...arr, { id: id++, ques: question, quesid: quesid++, ansid: ansid++,ans:"" }])
+        setArr([...arr, { id: id++, ques: question, quesid: quesid++, ansid: ansid++, ans: "" }])
         setState(true)
         getAPI()
         saveQues()
@@ -130,9 +132,13 @@ export default function Main() {
                             <polygon fill="#3dd9eb" points="41,43 7,43 7,28 11,28 11,39 37,39 37,28 41,28"></polygon><rect width="20" height="4" x="14" y="32" fill="#f5bc00"></rect><rect width="3.999" height="18.973" x="22.743" y="17.19" fill="#f5bc00" transform="rotate(-77.379 24.743 26.678)"></rect><rect width="4" height="19.022" x="24.812" y="10.629" fill="#f5bc00" transform="rotate(-64.196 26.812 20.14)"></rect><rect width="4" height="19.015" x="28.478" y="4.617" fill="#f5bc00" transform="rotate(-49.892 30.48 14.126)"></rect><rect width="4" height="19.1" x="33.75" y="-.425" fill="#f5bc00" transform="rotate(-37.022 35.749 9.126)"></rect><rect width="4" height="4" x="7" y="39" fill="#00b3d7"></rect><rect width="4" height="4" x="37" y="39" fill="#00b3d7"></rect>
                         </svg>
                     </div>
-                    <div className="justify-self-end mt-[20px] mr-[20px]">
-                        <UserProfile image={data.image} name={data.name} email={data.email} />
+                    <div className="flex justify-self-end mt-[20px] mr-[20px]">
+                        <div className="mr-[20px]">
+                            <UserProfile name={decoded.name} email={decoded.email} />
+                        </div>
+                        <Logout />
                     </div>
+
                 </div>
 
                 <div className="">
