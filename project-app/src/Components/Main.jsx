@@ -1,12 +1,12 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Addchat from "./Addchat"
 import Settings from "./Settings"
 import UserChat from "./UserChat"
 import Intro from "./Intro"
 import Chatbot from "./Chatbot"
 import UserProfile from "./UserProfile"
-import Cookies from 'universal-cookie';
-import { jwtDecode } from "jwt-decode";
+import Cookies from 'universal-cookie'
+import { jwtDecode } from "jwt-decode"
 import Logout from "./Logout"
 
 let id = 0
@@ -23,7 +23,7 @@ export default function Main() {
     const [ans, setAns] = useState("")
     const cookies = new Cookies()
     const decoded = jwtDecode(cookies.get('token'))
-
+   
     const getAPI = async () => {
         let headersList = {
             "Accept": "*/*",

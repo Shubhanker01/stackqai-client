@@ -45,6 +45,8 @@ export default function Login() {
           toast.success("You have successfully logged in", { position: 'top-center' })
           cookies.set('token', res.token)
           navigate('/main')
+          // refresh the page to set the token
+          navigate(0)
         }
       })
     }
