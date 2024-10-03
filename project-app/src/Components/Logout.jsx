@@ -1,65 +1,42 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import Cookies from "universal-cookie"
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
 
 export default function Logout() {
     const navigate = useNavigate()
-    const [openModal, setopenModal] = useState(false)
+    const [show, setShow] = useState(false);
+
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
     const logout = () => {
         const cookie = new Cookies
         cookie.remove('token')
         navigate('/')
     }
-    const popup = () => {
-        if (openModal == false) {
-            setopenModal(true)
-        }
-        else {
-            setopenModal(false)
-        }
 
-    }
     return (
         <>
-            <button onClick={popup}>
-                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAABX0lEQVR4nO2ZsUoEMRCG8wr2WovvIBsLwcJmV0sbG2sRwTew0TewshMP4Qo3cpegltoqVp5JbaHH3RZyzAkj0bvGQoVNLs4xP/z1/l8yk00YIViseGp1cE47ONMOKuOGGMvaQaUtNC/dYD5oeGPhNWZw890Wuv67QQD8yk80vBsbGqEAqkQA/SAAacIPP80AXrwDjkuonriE3BSX0M7BHbaegC6ALBRu7t3i+cMbXQDvfOsKT256dAFkoXBlQ+NR+5kugCwULq1f4P6xpQsgRx43N1kAOWruxdVyJjrATyHqOivKTpaXC2QB5Je7cq1cpgyAWa7es1xtM4DhElL/r4kN9WPU8I9MTcdVgvRlLqd8nSb9oNk9vMc25Sel+cWCAQTvAHIJ1RU3sUt8Cul0I6ZeGAALzSQAFk6DAPiZrR97TjK8tvBy/YizIuis2EHDTw4jl03fr3zQ8CyW+JM+AHgKOvJY3aLSAAAAAElFTkSuQmCC" className="h-[30px] w-[30px]"></img>
-            </button>
-            {
-                openModal == true ?
+            {/* <!-- Button trigger modal --> */}
+            <Button variant="danger" onClick={handleShow}>
+                Logout
+            </Button>
 
-                    <div className="relative z-20" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-
-                        <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity z-20" aria-hidden="true"></div>
-
-                        <div className="fixed inset-0 z-20 w-screen overflow-y-auto">
-                            <div className="flex min-h-full items-end justify-center z-20 p-4 text-center sm:items-center sm:p-0">
-                                <div className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg z-20">
-                                    <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
-                                        <div className="sm:flex sm:items-start">
-                                            <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
-                                                <svg className="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" aria-hidden="true">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
-                                                </svg>
-                                            </div>
-                                            <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                                                <h3 className="text-base font-semibold leading-6 text-gray-900" id="modal-title">Logout</h3>
-                                                <div className="mt-2">
-                                                    <p className="text-sm text-gray-500">Are you sure you want to logout?</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-                                        <button type="button" className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto" onClick={logout}>Logout</button>
-                                        <button type="button" className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto" onClick={() => setopenModal(false)}>Cancel</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    :
-                    <div></div>
-            }
+            <Modal show={show} onHide={handleClose}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Logout</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>Are you sure you want to Logout?</Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleClose}>
+                        Close
+                    </Button>
+                    <Button variant="danger" onClick={logout}>
+                        Logout
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </>
     )
 }
