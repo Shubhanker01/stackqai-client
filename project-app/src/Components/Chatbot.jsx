@@ -3,11 +3,12 @@ import logo from '/stackQAI/Frontend/project-app/src/icons8-dots-loading.gif'
 
 export default function Chatbot(props) {
     const [loader, setLoader] = useState(props.loader)
-    
-    setTimeout(() => {
-        setLoader(false)
-    }, 6000);
-    
+
+    useEffect(() => {
+        if (props.answer != "") {
+            setLoader(false)
+        }
+    }, [loader])
 
     return (
         <>

@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Addchat from "./Addchat"
 import Settings from "./Settings"
 import UserChat from "./UserChat"
@@ -20,9 +20,16 @@ export default function Main() {
     const [question, setQuestion] = useState("")
     const [arr, setArr] = useState([])
     const [state, setState] = useState(false)
-    const [ans, setAns] = useState("")
     const cookies = new Cookies()
     const decoded = jwtDecode(cookies.get('token'))
+
+    useEffect(() => {
+        setState(JSON.parse(window.localStorage.getItem('state')))
+    }, [])
+
+    useEffect(() => {
+        window.localStorage.setItem('state', state)
+    })
 
     const getAPI = async () => {
         let headersList = {
@@ -38,7 +45,7 @@ export default function Main() {
             headers: headersList
         });
         let data = await response.text();
-        setAns(data)
+        // setAns(data)
         setArr([...arr, { id: id++, ques: question, quesid: quesid++, ansid: ansid++, ans: data }])
     }
 
