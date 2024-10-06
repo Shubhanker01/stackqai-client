@@ -24,12 +24,16 @@ export default function Main() {
     const decoded = jwtDecode(cookies.get('token'))
 
     useEffect(() => {
-        setState(JSON.parse(window.localStorage.getItem('state')))
+        setState(window.localStorage.getItem('state'))
+
+        // if (state === false) {
+        //     setState(true)
+        // }
     }, [])
 
     useEffect(() => {
         window.localStorage.setItem('state', state)
-    })
+    }, [state])
 
     const getAPI = async () => {
         let headersList = {
