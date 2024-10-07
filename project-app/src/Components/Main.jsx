@@ -19,21 +19,10 @@ export default function Main() {
     const [press, setPress] = useState("")
     const [question, setQuestion] = useState("")
     const [arr, setArr] = useState([])
+    const [ans, setAns] = useState("")
     const [state, setState] = useState(false)
     const cookies = new Cookies()
     const decoded = jwtDecode(cookies.get('token'))
-
-    useEffect(() => {
-        setState(window.localStorage.getItem('state'))
-
-        // if (state === false) {
-        //     setState(true)
-        // }
-    }, [])
-
-    useEffect(() => {
-        window.localStorage.setItem('state', state)
-    }, [state])
 
     const getAPI = async () => {
         let headersList = {
@@ -49,8 +38,9 @@ export default function Main() {
             headers: headersList
         });
         let data = await response.text();
-        // setAns(data)
         setArr([...arr, { id: id++, ques: question, quesid: quesid++, ansid: ansid++, ans: data }])
+        setAns(data)
+        console.log("I am getAPi and i got called first")
     }
 
     const saveQues = async () => {
@@ -60,7 +50,8 @@ export default function Main() {
         }
         let bodyContent = JSON.stringify({
             "email": decoded.email,
-            "question": question
+            "question": question,
+            "answer": ans
         })
         let response = await fetch("http://localhost:9000/ques", {
             method: 'POST',
@@ -69,6 +60,7 @@ export default function Main() {
         })
         let data = await response.text()
         console.log(data)
+        console.log("I am saveQues and i got called first")
     }
 
     const handleChange = (e) => {
@@ -77,10 +69,11 @@ export default function Main() {
     }
 
     const handleClick = () => {
+        getAPI().then(() => {
+            saveQues()
+        }).catch(err => console.log(err))
         setArr([...arr, { id: id++, ques: question, quesid: quesid++, ansid: ansid++, ans: "" }])
         setState(true)
-        getAPI()
-        saveQues()
         setQuestion("")
         // var ele = document.getElementById('chatbox')
         // ele.scrollTop = ele.scrollHeight
@@ -166,7 +159,7 @@ export default function Main() {
 
                                             <li key={ques.id} className="relative mb-[25px]">
                                                 <UserChat chat={ques.ques} key={ques.quesid}></UserChat>
-                                                <Chatbot loader={true} ques={ques.ques} answer={ques.ans} key={ques.ansid}></Chatbot>
+                                                <Chatbot loader={true} ques={ques.ques} answer={ques.ans} key={ques.ansid} email={decoded.email}></Chatbot>
                                             </li>
 
                                         ))
