@@ -39,11 +39,13 @@ export default function Main() {
         });
         let data = await response.text();
         setArr([...arr, { id: id++, ques: question, quesid: quesid++, ansid: ansid++, ans: data }])
-        setAns(data)
-        console.log("I am getAPi and i got called first")
+        id = id + 1
+        quesid = quesid + 1
+        ansid = ansid + 1
+        return data
     }
 
-    const saveQues = async () => {
+    const saveQues = async (answer) => {
         let headersList = {
             "Accept": "*/*",
             "Content-Type": "application/json"
@@ -51,7 +53,7 @@ export default function Main() {
         let bodyContent = JSON.stringify({
             "email": decoded.email,
             "question": question,
-            "answer": ans
+            "answer": answer
         })
         let response = await fetch("http://localhost:9000/ques", {
             method: 'POST',
@@ -60,7 +62,6 @@ export default function Main() {
         })
         let data = await response.text()
         console.log(data)
-        console.log("I am saveQues and i got called first")
     }
 
     const handleChange = (e) => {
@@ -69,10 +70,10 @@ export default function Main() {
     }
 
     const handleClick = () => {
-        getAPI().then(() => {
-            saveQues()
+        setArr([...arr, { id: id, ques: question, quesid: quesid, ansid: ansid, ans: "" }])
+        getAPI().then(res => saveQues(res)).then(() => {
+            console.log("Successfully saved")
         }).catch(err => console.log(err))
-        setArr([...arr, { id: id++, ques: question, quesid: quesid++, ansid: ansid++, ans: "" }])
         setState(true)
         setQuestion("")
         // var ele = document.getElementById('chatbox')
@@ -156,7 +157,7 @@ export default function Main() {
                                 <ul className="absolute top-[100px] left-[80px] w-[80%] h-[70%] flex flex-col overflow-auto  scroll-auto lg:left-[180px] z-0" id="chatbox">
                                     {
                                         arr.map((ques) => (
-
+                                            // console.log(ques.ans)
                                             <li key={ques.id} className="relative mb-[25px]">
                                                 <UserChat chat={ques.ques} key={ques.quesid}></UserChat>
                                                 <Chatbot loader={true} ques={ques.ques} answer={ques.ans} key={ques.ansid} email={decoded.email}></Chatbot>

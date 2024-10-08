@@ -27,10 +27,10 @@ export default function Chatbot(props) {
         if (props.answer != "") {
             setLoader(false)
         }
-    }, [loader])
+    }, [loader,props.answer])
 
     // useEffect(()=>{
-    //     console.log(props.answer)
+    //     console.log("I got called")
     // },[])
 
     return (
