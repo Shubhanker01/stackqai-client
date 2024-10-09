@@ -1,6 +1,4 @@
 import { useEffect, useState } from "react"
-import Addchat from "./Addchat"
-import Settings from "./Settings"
 import UserChat from "./UserChat"
 import Intro from "./Intro"
 import Chatbot from "./Chatbot"
@@ -8,18 +6,16 @@ import UserProfile from "./UserProfile"
 import Cookies from 'universal-cookie'
 import { jwtDecode } from "jwt-decode"
 import Logout from "./Logout"
+import Sidebar from "./Sidebar"
 
 let id = 0
 let quesid = 10000
 let ansid = 30000
 
 export default function Main() {
-
-    const [toggle, setToggle] = useState("off")
     const [press, setPress] = useState("")
     const [question, setQuestion] = useState("")
     const [arr, setArr] = useState([])
-    const [ans, setAns] = useState("")
     const [state, setState] = useState(false)
     const cookies = new Cookies()
     const decoded = jwtDecode(cookies.get('token'))
@@ -76,48 +72,15 @@ export default function Main() {
         }).catch(err => console.log(err))
         setState(true)
         setQuestion("")
-        // var ele = document.getElementById('chatbox')
-        // ele.scrollTop = ele.scrollHeight
-    }
-
-    const changeToggle = () => {
-        if (toggle == "off") {
-            setToggle("on")
-        }
-        else {
-            setToggle("off")
-        }
     }
 
     return (
         <>
             <div className="w-full bg-gray-50 h-screen">
-                {
-                    toggle == "on" ?
-                        <div className="fixed top-[0px] left-[0px] w-[150px] cursor-pointer bg-gray-600 h-screen transition-[width] duration-700 z-10 lg:w-[160px]">
-                            <div className="relative left-[10px] top-[10px]" onClick={() => changeToggle()}>
-                                <div className="mb-[3px] w-[25px] h-[5px] bg-yellow-400"></div>
-                                <div className="mb-[3px] w-[25px] h-[5px] bg-yellow-400"></div>
-                                <div className=" w-[25px] h-[5px] bg-yellow-400"></div>
-
-                            </div>
-                            <Addchat toggle={toggle}></Addchat>
-                            <Settings toggle={toggle}></Settings>
-                        </div> :
-                        <div className="fixed top-[0px] left-[0px] w-[60px] cursor-pointer bg-gray-600 h-screen transition-[width] duration-700 z-10 lg:w-[70px]">
-                            <div className="relative left-[10px] top-[10px]" onClick={() => changeToggle()}>
-                                <div className="mb-[3px] w-[25px] h-[5px] bg-yellow-400"></div>
-                                <div className="mb-[3px] w-[25px] h-[5px] bg-yellow-400"></div>
-                                <div className=" w-[25px] h-[5px] bg-yellow-400"></div>
-                            </div>
-                            <Addchat toggle={toggle}></Addchat>
-                            <Settings toggle={toggle}></Settings>
-                        </div>
-                }
-
+                <Sidebar />
 
                 {
-                    press == "" ?
+                    press.length == 0 ?
                         <div className="">
                             <input type="text" id="search" placeholder="Enter a prompt here" className="fixed left-[85px] bottom-[15px] z-0 rounded-full border-zinc-700 border-2 p-[2px] text-slate-950 placeholder:text-slate-950 text-sm w-[70%] h-[40px] lg:left-[165px] lg:text-lg lg:w-[80%] lg:h-[55px] lg:p-[4px]" value={question} onChange={handleChange}></input>
                         </div> :
@@ -157,10 +120,9 @@ export default function Main() {
                                 <ul className="absolute top-[100px] left-[80px] w-[80%] h-[70%] flex flex-col overflow-auto  scroll-auto lg:left-[180px] z-0" id="chatbox">
                                     {
                                         arr.map((ques) => (
-                                            // console.log(ques.ans)
                                             <li key={ques.id} className="relative mb-[25px]">
-                                                <UserChat chat={ques.ques} key={ques.quesid}></UserChat>
-                                                <Chatbot loader={true} ques={ques.ques} answer={ques.ans} key={ques.ansid} email={decoded.email}></Chatbot>
+                                                <UserChat key={ques.quesid} chat={ques.ques}></UserChat>
+                                                <Chatbot key={ques.ansid} loader={true} ques={ques.ques} answer={ques.ans} email={decoded.email}></Chatbot>
                                             </li>
 
                                         ))

@@ -6,6 +6,7 @@ import Login from './Components/Login';
 import Signup from './Components/Signup';
 import Redirect from './Components/Redirect';
 import Main from './Components/Main';
+import History from './Components/History';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
             <Route path='/signup' element={<Signup></Signup>}></Route>
             <Route path='/redirect' element={<Redirect></Redirect>}></Route>
             <Route path='/main' element={<Main></Main>}></Route>
+            <Route path='/history' element={<History></History>}></Route>
           </Routes>
         </Router>
       
