@@ -9,7 +9,7 @@ export default function Login() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const navigate = useNavigate()
-  const cookies = new Cookies(null, { path: '/main' })
+  const cookies = new Cookies(null, { path: '/' })
 
   const loginApi = async () => {
     let headersList = {

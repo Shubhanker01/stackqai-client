@@ -11,7 +11,7 @@ export default function Signup() {
     let [email, setEmail] = useState("")
     let [password, setPassword] = useState("")
     let [confPassword, setconfPassword] = useState("")
-    const cookies = new Cookies(null, { path: '/main' })
+    const cookies = new Cookies(null, { path: '/' })
 
     const signupApi = async () => {
         let headersList = {

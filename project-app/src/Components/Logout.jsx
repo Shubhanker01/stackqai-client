@@ -11,7 +11,7 @@ export default function Logout() {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
     const logout = () => {
-        const cookie = new Cookies
+        const cookie = new Cookies()
         cookie.remove('token')
         navigate('/')
     }
