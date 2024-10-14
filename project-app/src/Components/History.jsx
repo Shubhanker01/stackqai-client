@@ -4,9 +4,11 @@ import Searchbar from "./Searchbar";
 import Cookies from "universal-cookie";
 import { useEffect, useState } from "react";
 import Card from 'react-bootstrap/Card';
+import { filterSearch } from '../Utilities/searchfilter'
 
 export default function History() {
     const [items, getItems] = useState([])
+    const [search, setSearch] = useState("")
     const cookies = new Cookies()
 
     const getHistory = async () => {
@@ -29,14 +31,16 @@ export default function History() {
     }
     useEffect(() => {
         getHistory().then((res) => {
-            getItems(res)
+            let arr = filterSearch(search, res)
+            getItems(arr)
         }).catch(err => console.log(err))
-    }, [items])
+    }, [search])
+
 
     return (
         <>
             <Sidebar />
-            <Searchbar />
+            <Searchbar search={search} setSearch={setSearch} />
             <div className="w-[80%] ml-[130px] mt-[30px]">
                 <div className="pt-2 relative mx-auto text-gray-600">
 
