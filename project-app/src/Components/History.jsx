@@ -5,6 +5,7 @@ import Cookies from "universal-cookie";
 import { useEffect, useState } from "react";
 import Card from 'react-bootstrap/Card';
 import { filterSearch } from '../Utilities/searchfilter'
+import Delete from "./Delete";
 
 export default function History() {
     const [items, getItems] = useState([])
@@ -34,35 +35,34 @@ export default function History() {
             let arr = filterSearch(search, res)
             getItems(arr)
         }).catch(err => console.log(err))
-    }, [search])
+    }, [search, items])
 
 
     return (
         <>
             <Sidebar />
             <Searchbar search={search} setSearch={setSearch} />
-            <div className="w-[80%] ml-[130px] mt-[30px]">
+            <div className="fixed w-[80%] top-[70px] h-[80%] left-[100px] overflow-auto">
                 <div className="pt-2 relative mx-auto text-gray-600">
+                    {
+                        items.length === 0 ?
+                            <div>Nothing to Show in History</div> :
+                            <div>
+                                {items.map((item) => {
+                                    return <Card key={item._id} style={{ width: '80%' }}>
+                                        <Card.Body>
+                                            <Card.Subtitle className="mb-2 text-muted">{item.question}</Card.Subtitle>
+                                            <Card.Text>
+                                                {item.answer}
+                                            </Card.Text>
+                                            <Delete id={item._id} />
+                                        </Card.Body>
 
+                                    </Card>
+                                })}
+                            </div>
+                    }
                 </div>
-                {
-                    items.length === 0 ?
-                        <div>Nothing to Show in History</div> :
-                        <div>
-                            {items.map((item) => {
-                                return <Card key={item._id} style={{ width: '80%' }}>
-                                    <Card.Body>
-                                        <Card.Subtitle className="mb-2 text-muted">{item.question}</Card.Subtitle>
-                                        <Card.Text>
-                                            {item.answer}
-                                        </Card.Text>
-                                    </Card.Body>
-                                </Card>
-                            })}
-
-                        </div>
-                }
-
             </div>
         </>
     )
