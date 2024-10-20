@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import UserChat from "./UserChat"
 import Intro from "./Intro"
 import Chatbot from "./Chatbot"
@@ -7,16 +7,17 @@ import Cookies from 'universal-cookie'
 import { jwtDecode } from "jwt-decode"
 import Logout from "./Logout"
 import Sidebar from "./Sidebar"
+import { convertToNewString } from "../Utilities/newstring"
 
 let id = 0
 let quesid = 10000
 let ansid = 30000
 
 export default function Main() {
-    const [press, setPress] = useState("")
     const [question, setQuestion] = useState("")
     const [arr, setArr] = useState([])
     const [state, setState] = useState(false)
+    const [disabled, isDisabled] = useState(true)
     const cookies = new Cookies()
     const decoded = jwtDecode(cookies.get('token'))
 
@@ -61,8 +62,14 @@ export default function Main() {
     }
 
     const handleChange = (e) => {
-        setQuestion(e.target.value)
-        setPress(e.target.value)
+        let str = convertToNewString(e.target.value)
+        if (str.length !== 0) {
+            isDisabled(false)
+            setQuestion(str)
+        }
+        else {
+            isDisabled(true)
+        }
     }
 
     const handleClick = () => {
@@ -79,18 +86,13 @@ export default function Main() {
             <div className="w-full bg-gray-50 h-screen">
                 <Sidebar />
 
-                {
-                    press.length == 0 ?
-                        <div className="">
-                            <input type="text" id="search" placeholder="Enter a prompt here" className="fixed left-[85px] bottom-[15px] z-0 rounded-full border-zinc-700 border-2 p-[2px] text-slate-950 placeholder:text-slate-950 text-sm w-[70%] h-[40px] lg:left-[165px] lg:text-lg lg:w-[80%] lg:h-[55px] lg:p-[4px]" value={question} onChange={handleChange}></input>
-                        </div> :
-                        <div className="">
-                            <input type="text" id="search" placeholder="Enter a prompt here" className="fixed left-[85px] bottom-[15px] z-0 rounded-full border-zinc-700 border-2 p-[2px] text-slate-950 placeholder:text-slate-950 text-sm z-0 w-[70%] h-[40px] lg:left-[165px] lg:text-lg lg:w-[80%] lg:h-[55px] lg:p-[4px]" value={question} onChange={handleChange}></input>
-                            <button className="fixed right-[9%] bottom-[18px] h-[35px] w-[35px] cursor-pointer z-10 lg:bottom-[25px]" onClick={() => handleClick()}>
-                                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAACSElEQVR4nO2az0ocQRDGf6eMOSQoGM0tHnPQk97MMSiBhHg0+gwS8S38c1ASCLnmERIX4xtIyDmuq6eoCYp61hgsaShBhpnZ3ZmumR7xgw8Gdre7Pr7u3qrqgXvcXfQBU8Ay0ACawBlwoXTP2/qZ+85boJdAEAGzwCbwH5Au6X6zAczoWKXjIbAAHOYIPo0HwDzQU5aIV8CeRwFx7gKTlgKc9WuGAuL8os57xSDws0QRovwBDPgSMaR2S0VsaQyF8ESPUamYe8DTvCJ6KlpOkrHMch3RnwIIXmL8kOeIlUA50akIZ99OAAFLCnc7/dNc8DDZODAGHBmJed+JGz7SjlEdb9hIzH67jT/raaIjFWEp5l2WkE2PEx0DIzruc+CPZyGNrHoiTypelTOXwOMkIVMG9ls78zpJyIqREEtnlpKENAyFWDnzNUlIy1iIhTPNJCGnJQjx7cxxkpCLkoTEnRkrMM75nRZyWtHS+ut7ae3UcLNvh3D8FnFCso7f5Ro5IcrFKlMUH05IVorSW7Ok8V9a0ujwvSZOCLBOBmZq4IQop7OERNoVD73U/Q08oA3mPUz0wrj5MNdOxI0rIbRJJYWtbjqOkwEELAm8Al7SJT4GELjEuEoORNo4lkC41ckGT0N/QNcKgxTEUEllcBpdVv4MTxioaJlt6WWTyWXoVUkiPlvfvU8YL7VmniM2LyJt7e97TjvmqnoDItKueEN7sd0Gf6lZ7HSRo9U3XG3wRtuY37SePrn1Uo17/qXl6aIWRY+8R3EPwsA1oBk5SAaWVBQAAAAASUVORK5CYII=" />
-                            </button>
-                        </div>
-                }
+                <div className="">
+                    <input type="text" id="search" placeholder="Enter a prompt here" className="fixed left-[85px] bottom-[15px] z-0 rounded-full border-zinc-700 border-2 p-[2px] text-slate-950 placeholder:text-slate-950 text-sm z-0 w-[70%] h-[40px] lg:left-[165px] lg:text-lg lg:w-[80%] lg:h-[55px] lg:p-[4px]" value={question} onChange={handleChange}></input>
+                    <button className="fixed right-[9%] bottom-[18px] h-[35px] w-[35px] cursor-pointer z-10 lg:bottom-[25px]" onClick={() => handleClick()} disabled={disabled}>
+                        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAACSElEQVR4nO2az0ocQRDGf6eMOSQoGM0tHnPQk97MMSiBhHg0+gwS8S38c1ASCLnmERIX4xtIyDmuq6eoCYp61hgsaShBhpnZ3ZmumR7xgw8Gdre7Pr7u3qrqgXvcXfQBU8Ay0ACawBlwoXTP2/qZ+85boJdAEAGzwCbwH5Au6X6zAczoWKXjIbAAHOYIPo0HwDzQU5aIV8CeRwFx7gKTlgKc9WuGAuL8os57xSDws0QRovwBDPgSMaR2S0VsaQyF8ESPUamYe8DTvCJ6KlpOkrHMch3RnwIIXmL8kOeIlUA50akIZ99OAAFLCnc7/dNc8DDZODAGHBmJed+JGz7SjlEdb9hIzH67jT/raaIjFWEp5l2WkE2PEx0DIzruc+CPZyGNrHoiTypelTOXwOMkIVMG9ls78zpJyIqREEtnlpKENAyFWDnzNUlIy1iIhTPNJCGnJQjx7cxxkpCLkoTEnRkrMM75nRZyWtHS+ut7ae3UcLNvh3D8FnFCso7f5Ro5IcrFKlMUH05IVorSW7Ok8V9a0ujwvSZOCLBOBmZq4IQop7OERNoVD73U/Q08oA3mPUz0wrj5MNdOxI0rIbRJJYWtbjqOkwEELAm8Al7SJT4GELjEuEoORNo4lkC41ckGT0N/QNcKgxTEUEllcBpdVv4MTxioaJlt6WWTyWXoVUkiPlvfvU8YL7VmniM2LyJt7e97TjvmqnoDItKueEN7sd0Gf6lZ7HSRo9U3XG3wRtuY37SePrn1Uo17/qXl6aIWRY+8R3EPwsA1oBk5SAaWVBQAAAAASUVORK5CYII=" />
+                    </button>
+                </div>
+
 
                 <div className="grid grid-cols-2 fixed w-full top-[5px]">
 
