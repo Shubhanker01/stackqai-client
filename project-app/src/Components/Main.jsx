@@ -62,14 +62,9 @@ export default function Main() {
     }
 
     const handleChange = (e) => {
-        let str = convertToNewString(e.target.value)
-        if (str.length !== 0) {
-            isDisabled(false)
-            setQuestion(str)
-        }
-        else {
-            isDisabled(true)
-        }
+       setQuestion(e.target.value)
+       let str = convertToNewString(question)
+       console.log(str)
     }
 
     const handleClick = () => {
