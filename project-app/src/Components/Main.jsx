@@ -15,6 +15,7 @@ let ansid = 30000
 
 export default function Main() {
     const [question, setQuestion] = useState("")
+    const [formatQues, setFormatQues] = useState("")
     const [arr, setArr] = useState([])
     const [state, setState] = useState(false)
     const [disabled, isDisabled] = useState(true)
@@ -27,7 +28,7 @@ export default function Main() {
             "Content-Type": "application/json"
         }
         let bodyContent = JSON.stringify({
-            "ques": question
+            "ques": formatQues
         });
         let response = await fetch("http://127.0.0.1:5000/question", {
             method: "POST",
@@ -35,7 +36,7 @@ export default function Main() {
             headers: headersList
         });
         let data = await response.text();
-        setArr([...arr, { id: id++, ques: question, quesid: quesid++, ansid: ansid++, ans: data }])
+        setArr([...arr, { id: id++, ques: formatQues, quesid: quesid++, ansid: ansid++, ans: data }])
         id = id + 1
         quesid = quesid + 1
         ansid = ansid + 1
@@ -49,7 +50,7 @@ export default function Main() {
         }
         let bodyContent = JSON.stringify({
             "email": decoded.email,
-            "question": question,
+            "question": formatQues,
             "answer": answer
         })
         let response = await fetch("http://localhost:9000/ques", {
@@ -62,9 +63,15 @@ export default function Main() {
     }
 
     const handleChange = (e) => {
-       setQuestion(e.target.value)
-       let str = convertToNewString(question)
-       console.log(str)
+        setQuestion(e.target.value)
+        let str = convertToNewString(e.target.value)
+        if (str.length !== 0) {
+            isDisabled(false)
+            setFormatQues(str)
+        }
+        else {
+            isDisabled(true)
+        }
     }
 
     const handleClick = () => {

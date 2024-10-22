@@ -42,7 +42,7 @@ export default function History() {
         <>
             <Sidebar />
             <Searchbar search={search} setSearch={setSearch} />
-            <div className="fixed w-[80%] top-[70px] h-[80%] left-[100px] overflow-auto">
+            <div className="fixed w-[80%] top-[70px] h-[80%] left-[100px] overflow-auto lg:left-[250px] lg:top-[100px]">
                 <div className="pt-2 relative mx-auto text-gray-600">
                     {
                         items.length === 0 ?
