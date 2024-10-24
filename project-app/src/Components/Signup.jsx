@@ -60,7 +60,7 @@ export default function Signup() {
     return (
         <>
             <ToastContainer />
-            <div className="bg-[#f1f2f3] h-full absolute w-full">
+            <div className="bg-[#E8F1F8] h-full absolute w-full">
                 <Link to="/">
                     <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="50" height="50" viewBox="0 0 48 48" className="m-auto mt-2">
                         <polygon fill="#3dd9eb" points="41,43 7,43 7,28 11,28 11,39 37,39 37,28 41,28"></polygon><rect width="20" height="4" x="14" y="32" fill="#f5bc00"></rect><rect width="3.999" height="18.973" x="22.743" y="17.19" fill="#f5bc00" transform="rotate(-77.379 24.743 26.678)"></rect><rect width="4" height="19.022" x="24.812" y="10.629" fill="#f5bc00" transform="rotate(-64.196 26.812 20.14)"></rect><rect width="4" height="19.015" x="28.478" y="4.617" fill="#f5bc00" transform="rotate(-49.892 30.48 14.126)"></rect><rect width="4" height="19.1" x="33.75" y="-.425" fill="#f5bc00" transform="rotate(-37.022 35.749 9.126)"></rect><rect width="4" height="4" x="7" y="39" fill="#00b3d7"></rect><rect width="4" height="4" x="37" y="39" fill="#00b3d7"></rect>
@@ -68,31 +68,31 @@ export default function Signup() {
                 </Link>
 
                 <div className="w-full max-w-xs m-auto mt-[50px]">
-                    <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+                    <form className="bg-white shadow-lg rounded px-8 pt-6 pb-8 mb-4">
                         <div className="mb-2">
                             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="username">
                                 Name
                             </label>
-                            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="username" type="text" placeholder="" value={name} onChange={(e) => setName(e.target.value)} />
+                            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="username" type="text" placeholder="Enter your Name" value={name} onChange={(e) => setName(e.target.value)} />
                         </div>
                         <div className="mb-2">
                             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
                                 Email
                             </label>
-                            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="email" type="email" placeholder="" value={email} onChange={e => setEmail(e.target.value)} />
+                            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="email" type="email" placeholder="Enter your Email" value={email} onChange={e => setEmail(e.target.value)} />
                         </div>
                         <div className="mb-2">
                             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
                                 Password
                             </label>
-                            <input className="shadow appearance-none border border-black-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" placeholder="" value={password} onChange={e => setPassword(e.target.value)} />
+                            <input className="shadow appearance-none border border-black-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" placeholder="Enter your Password" value={password} onChange={e => setPassword(e.target.value)} />
 
                         </div>
                         <div className="mb-2">
                             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="conf-password">
                                 Confirm Password
                             </label>
-                            <input className="shadow appearance-none border border-black-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="conf-password" type="password" placeholder="" value={confPassword} onChange={e => setconfPassword(e.target.value)} />
+                            <input className="shadow appearance-none border border-black-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="conf-password" type="password" placeholder="Confirm your Password" value={confPassword} onChange={e => setconfPassword(e.target.value)} />
 
                         </div>
                         <div className="w-[256px]">

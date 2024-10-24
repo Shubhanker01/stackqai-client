@@ -13,7 +13,7 @@ const Delete = ({ id }) => {
     }
     return (
         <>
-            <button onClick={deleteChat}>
+            <button onClick={deleteChat} className="fixed right-[250px]">
                 <img width="30" height="30" src="https://img.icons8.com/ios-glyphs/30/filled-trash.png" alt="filled-trash" />
             </button>
         </>
