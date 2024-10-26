@@ -49,8 +49,9 @@ export default function History() {
                             <div>Nothing to Show in History</div> :
                             <div>
                                 {items.map((item) => {
-                                    return <Card key={item._id} style={{ width: '80%' }}>
-                                        <Card.Body>
+                                    return <Card key={item._id} style={{ width: '80%' }} className="mt-2">
+                                        <Card.Body className="mb-2">
+                                            <Card.Text>{item.date}</Card.Text>
                                             <Card.Subtitle className="mb-2 text-muted">{item.question}</Card.Subtitle>
                                             <Card.Text>
                                                 {item.answer}

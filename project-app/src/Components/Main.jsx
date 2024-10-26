@@ -81,6 +81,7 @@ export default function Main() {
         }).catch(err => console.log(err))
         setState(true)
         setQuestion("")
+        setFormatQues("")
     }
 
     return (
