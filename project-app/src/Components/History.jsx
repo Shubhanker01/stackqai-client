@@ -48,7 +48,7 @@ export default function History() {
                         items.length === 0 ?
                             <div>Nothing to Show in History</div> :
                             <div>
-                                {items.map((item) => {
+                                {/* {items.map((item) => {
                                     return <Card key={item._id} style={{ width: '80%' }} className="mt-2">
                                         <Card.Body className="mb-2">
                                             <Card.Text>{item.date}</Card.Text>
@@ -60,7 +60,8 @@ export default function History() {
                                         </Card.Body>
 
                                     </Card>
-                                })}
+                                })} */}
+                                
                             </div>
                     }
                 </div>
