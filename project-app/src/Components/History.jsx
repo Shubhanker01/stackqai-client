@@ -7,9 +7,12 @@ import Card from 'react-bootstrap/Card';
 import { filterSearch } from '../Utilities/searchfilter'
 import Delete from "./Delete";
 import Showdate from "./Showdate";
+import { filterByDate } from "../Utilities/filterByDate";
+
 
 export default function History() {
     const [items, getItems] = useState([])
+    const [date, getDate] = useState([])
     const [search, setSearch] = useState("")
     const cookies = new Cookies()
 
