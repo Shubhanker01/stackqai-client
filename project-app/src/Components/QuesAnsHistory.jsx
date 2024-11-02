@@ -1,5 +1,6 @@
 import React from 'react'
 import Card from 'react-bootstrap/Card';
+import Delete from './Delete';
 
 function QuesAnsHistory(props) {
     return (
@@ -17,6 +18,7 @@ function QuesAnsHistory(props) {
                             <Card.Text>
                                 {item.time}
                             </Card.Text>
+                            <Delete id={item._id} />
                         </Card.Body>
                     </Card>
                 })

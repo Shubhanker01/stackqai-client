@@ -47,10 +47,10 @@ export default function History() {
                     {
                         items.length === 0 ?
                             <div>Nothing to Show in History</div> :
-                            <div>
+                            <div className="w-[80%]">
                                 {
                                     items.map((item) => {
-                                        return <div key={item.key} className="mb-2">
+                                        return <div key={item.key} className="mb-4">
                                             <Showdate date={item.date} />
                                             <QuesAnsHistory data={item.arr}/>
                                         </div>
