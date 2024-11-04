@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Card from 'react-bootstrap/Card';
 import Delete from './Delete';
 
 function QuesAnsHistory(props) {
+
     return (
         <>
             {
