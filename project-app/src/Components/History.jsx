@@ -2,7 +2,6 @@ import Sidebar from "./Sidebar";
 import Searchbar from "./Searchbar";
 import Cookies from "universal-cookie";
 import { useEffect, useState } from "react";
-import { filterSearch } from '../Utilities/searchfilter'
 import Showdate from "./Showdate";
 import QuesAnsHistory from "./QuesAnsHistory";
 import Results from "./Results";
