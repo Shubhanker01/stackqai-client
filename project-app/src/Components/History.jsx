@@ -33,7 +33,6 @@ export default function History() {
     }
     useEffect(() => {
         getHistory().then((res) => {
-            // let arr = filterSearch(search, res)
             getItems(res)
         }).catch(err => console.log(err))
     }, [items])

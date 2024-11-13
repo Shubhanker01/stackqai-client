@@ -3,9 +3,11 @@ import Card from 'react-bootstrap/Card';
 import { filterSearch } from '../Utilities/searchfilter'
 import { flattenJson } from '../Utilities/flattenJson';
 import Checkbox from './Checkbox';
+import Offcanvas from 'react-bootstrap/Offcanvas'
 
 function Results({ search, items }) {
   const [results, setResults] = useState([])
+  let [noOfSelection, setNoOfSelection] = useState(0)
 
   useEffect(() => {
     let arr = flattenJson(items)
@@ -20,11 +22,26 @@ function Results({ search, items }) {
       </Card>
       <div>
         {
+          noOfSelection !== 0 ?
+            <div>
+              <Offcanvas show={true} >
+                <Offcanvas.Header closeButton>
+                  <Offcanvas.Title>Offcanvas</Offcanvas.Title>
+                </Offcanvas.Header>
+                <Offcanvas.Body>
+                  Some text as placeholder. In real life you can have the elements you
+                  have chosen. Like, text, images, lists, etc.
+                </Offcanvas.Body>
+              </Offcanvas>
+            </div> :
+            <div></div>
+        }
+        {
           results.map((obj) => {
             return <Card key={obj._id}>
               <Card.Body>
                 <div className='flex mb-2'>
-                  <Checkbox />
+                  <Checkbox id={obj._id} setNoOfSelection={setNoOfSelection} />
                   <Card.Subtitle className='pt-[3px] pl-[5px]'>{obj.date}</Card.Subtitle>
                 </div>
 
