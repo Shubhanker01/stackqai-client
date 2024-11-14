@@ -1,18 +1,17 @@
 import React, { useState } from 'react'
 import Form from 'react-bootstrap/Form';
 
-function Checkbox({ id,setNoOfSelection }) {
+function Checkbox({ id, setNoOfSelection, noOfSelection }) {
     let [selected, setSelected] = useState(false)
 
     function check() {
         if (selected === true) {
             setSelected(false)
-            setNoOfSelection(curr => curr-1)
+            setNoOfSelection(curr => curr - 1)
         }
         else {
             setSelected(true)
-            setNoOfSelection(curr => curr+1)
-            console.log(id)
+            setNoOfSelection(curr => curr + 1)
         }
     }
 
