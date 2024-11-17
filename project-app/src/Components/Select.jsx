@@ -3,7 +3,7 @@ import Alert from 'react-bootstrap/Alert'
 import Button from 'react-bootstrap/esm/Button'
 import Modal from 'react-bootstrap/Modal'
 
-function Select({ noOfSelection }) {
+function Select({ noOfSelection, ids }) {
     const [show, setShow] = useState(false)
     const handleShow = () => {
         if (show === false) {
@@ -12,6 +12,18 @@ function Select({ noOfSelection }) {
         else {
             setShow(false)
         }
+    }
+
+    const deleteMul = async () => {
+        try {
+            
+            
+        } catch (error) {
+            
+        }
+    }
+    const handleDelete = () => {
+        deleteMul()
     }
     return (
         <>
@@ -32,7 +44,7 @@ function Select({ noOfSelection }) {
                     <Button variant="secondary" onClick={() => { setShow(false) }}>
                         Close
                     </Button>
-                    <Button variant="danger" onClick={() => { setShow(false) }}>
+                    <Button variant="danger" onClick={handleDelete}>
                         Delete
                     </Button>
                 </Modal.Footer>

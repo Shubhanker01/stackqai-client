@@ -8,6 +8,7 @@ import Select from './Select';
 function Results({ search, items }) {
   const [results, setResults] = useState([])
   let [noOfSelection, setNoOfSelection] = useState(0)
+  let [ids, selectedIds] = useState([])
 
   useEffect(() => {
     let arr = flattenJson(items)
@@ -24,7 +25,7 @@ function Results({ search, items }) {
         {
           noOfSelection !== 0 ?
             <div>
-              <Select noOfSelection={noOfSelection}></Select>
+              <Select noOfSelection={noOfSelection} ids={ids}></Select>
             </div> :
             <div></div>
         }
@@ -33,7 +34,7 @@ function Results({ search, items }) {
             return <Card key={obj._id}>
               <Card.Body>
                 <div className='flex mb-2'>
-                  <Checkbox id={obj._id} setNoOfSelection={setNoOfSelection} noOfSelection={noOfSelection} />
+                  <Checkbox id={obj._id} setNoOfSelection={setNoOfSelection} noOfSelection={noOfSelection} selectedIds={selectedIds} ids={ids} />
                   <Card.Subtitle className='pt-[3px] pl-[5px]'>{obj.date}</Card.Subtitle>
                 </div>
 

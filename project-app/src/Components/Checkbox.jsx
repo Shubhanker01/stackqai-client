@@ -1,21 +1,25 @@
 import React, { useState } from 'react'
 import Form from 'react-bootstrap/Form';
 
-function Checkbox({ id, setNoOfSelection, noOfSelection }) {
+function Checkbox({ id, setNoOfSelection, selectedIds, ids }) {
     let [selected, setSelected] = useState(false)
 
     function check() {
         if (selected === true) {
             setSelected(false)
             setNoOfSelection(curr => curr - 1)
+            selectedIds(ids.filter(paramId => paramId != id))
         }
         else {
             setSelected(true)
             setNoOfSelection(curr => curr + 1)
+            selectedIds([...ids, id])
         }
     }
 
     return (
+
+
         <div>
             <Form>
                 {['checkbox'].map((type) => (
