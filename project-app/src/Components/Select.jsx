@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import Alert from 'react-bootstrap/Alert'
 import Button from 'react-bootstrap/esm/Button'
 import Modal from 'react-bootstrap/Modal'
+import { ToastContainer, toast } from "react-toastify"
 
 function Select({ noOfSelection, ids }) {
     const [show, setShow] = useState(false)
@@ -16,17 +17,36 @@ function Select({ noOfSelection, ids }) {
 
     const deleteMul = async () => {
         try {
-            
-            
+            let headersList = {
+                "Accept": "*/*",
+                "Content-Type": "application/json"
+            }
+            let bodyContent = JSON.stringify({
+                "ids": ids
+            });
+            let response = await fetch(`http://localhost:9000/ques/history/delete/bulk/${noOfSelection}`, {
+                method: "DELETE",
+                body: bodyContent,
+                headers: headersList
+            });
+
+            let data = await response.text();
+            return data
+
         } catch (error) {
-            
+            console.log(error)
         }
     }
     const handleDelete = () => {
-        deleteMul()
+        deleteMul().then((res) => {
+            toast.success(res, { position: 'top-center' })
+        }).catch((err) => {
+            console.log(err)
+        })
     }
     return (
         <>
+            <ToastContainer />
             <Alert variant='success'>
                 <Alert.Heading>
                     Selected {noOfSelection} items
