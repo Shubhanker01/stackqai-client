@@ -7,22 +7,23 @@ import Signup from './Components/Signup';
 import Redirect from './Components/Redirect';
 import Main from './Components/Main';
 import History from './Components/History';
+import { ToastContainer } from 'react-toastify';
 
 function App() {
   return (
     <>
-      
-        <Router>
-          <Routes>
-            <Route path='/' element={<Home></Home>}></Route>
-            <Route path='/login' element={<Login></Login>}></Route>
-            <Route path='/signup' element={<Signup></Signup>}></Route>
-            <Route path='/redirect' element={<Redirect></Redirect>}></Route>
-            <Route path='/main' element={<Main></Main>}></Route>
-            <Route path='/history' element={<History></History>}></Route>
-          </Routes>
-        </Router>
-      
+      <ToastContainer />
+      <Router>
+        <Routes>
+          <Route path='/' element={<Home></Home>}></Route>
+          <Route path='/login' element={<Login></Login>}></Route>
+          <Route path='/signup' element={<Signup></Signup>}></Route>
+          <Route path='/redirect' element={<Redirect></Redirect>}></Route>
+          <Route path='/main' element={<Main></Main>}></Route>
+          <Route path='/history' element={<History></History>}></Route>
+        </Routes>
+      </Router>
+
 
 
     </>

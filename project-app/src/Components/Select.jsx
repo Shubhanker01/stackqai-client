@@ -39,7 +39,8 @@ function Select({ noOfSelection, ids }) {
     }
     const handleDelete = () => {
         deleteMul().then((res) => {
-            toast.success(res, { position: 'top-center' })
+            // toast.success(res, { position: 'top-center' })
+            alert(res)
         }).catch((err) => {
             console.log(err)
         })
