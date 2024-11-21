@@ -11,6 +11,7 @@ export default function History() {
     const [items, getItems] = useState([])
     const [search, setSearch] = useState("")
     const [searchState, setSearchState] = useState(false)
+    const [checkDelete, isCheckDelete] = useState(false)
     const cookies = new Cookies()
 
     const getHistory = async () => {
@@ -29,14 +30,14 @@ export default function History() {
 
         let data = await response.json();
         return data
-
     }
+
     useEffect(() => {
         getHistory().then((res) => {
             getItems(res)
         }).catch(err => console.log(err))
-    }, [])
-
+        console.log("Hello I am called")
+    }, [checkDelete])
 
 
     return (
@@ -55,7 +56,7 @@ export default function History() {
                                             items.map((item) => {
                                                 return <div key={item.key} className="mb-4">
                                                     <Showdate date={item.date} />
-                                                    <QuesAnsHistory data={item.arr} />
+                                                    <QuesAnsHistory data={item.arr} checkDelete={checkDelete} isCheckDelete={isCheckDelete} />
                                                 </div>
                                             })
                                         }

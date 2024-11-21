@@ -19,7 +19,7 @@ function QuesAnsHistory(props) {
                             <Card.Text>
                                 {item.time}
                             </Card.Text>
-                            <Delete id={item._id} />
+                            <Delete id={item._id} checkDelete={props.checkDelete} isCheckDelete={props.isCheckDelete} />
                         </Card.Body>
                     </Card>
                 })
