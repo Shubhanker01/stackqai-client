@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import Showdate from "./Showdate";
 import QuesAnsHistory from "./QuesAnsHistory";
 import Results from "./Results";
+import DeleteAll from "./DeleteAll";
 
 
 export default function History() {
@@ -36,7 +37,6 @@ export default function History() {
         getHistory().then((res) => {
             getItems(res)
         }).catch(err => console.log(err))
-        console.log("Hello I am called")
     }, [checkDelete])
 
 
@@ -44,6 +44,7 @@ export default function History() {
         <>
             <Sidebar />
             <Searchbar search={search} setSearch={setSearch} searchState={searchState} setSearchState={setSearchState} />
+            <DeleteAll />
             <div className="fixed w-[80%] top-[70px] h-[80%] left-[100px] overflow-auto lg:left-[250px] lg:top-[100px]">
                 <div className="pt-2 relative mx-auto text-gray-600">
                     {
