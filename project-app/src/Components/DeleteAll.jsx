@@ -2,22 +2,56 @@ import { React, useState } from 'react'
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { jwtDecode } from 'jwt-decode'
+import { getCookieVal } from '../Utilities/getCookieVal';
+import { toast } from 'react-toastify'
 
-function DeleteAll() {
+function DeleteAll({ isCheckDelete, length }) {
     const [show, setShow] = useState(false);
-    // const token = jwtDecode()
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
-    const deleteAllApi = async () => {
 
+    function checkDisable() {
+        if (length === 0) {
+            return true
+        }
+        else {
+            return false
+        }
     }
-    const deleteAll = () => {
 
+    const deleteAllApi = async (userId) => {
+        let headersList = {
+            "Accept": "*/*"
+        }
+        let response = await fetch(`http://localhost:9000/ques/history/deleteAll/${userId}`, {
+            method: "DELETE",
+            headers: headersList
+        });
+        if (response.status === 400) {
+            return Error(response.text())
+        }
+        else {
+            let data = response.text()
+            return data
+        }
+    }
+
+    const deleteAll = () => {
+        const cookie = getCookieVal()
+        const token = jwtDecode(cookie)
+        deleteAllApi(token.id).then((res) => {
+            toast.success(res, { position: 'top-center' })
+            isCheckDelete(true)
+        }).catch((err) => {
+            toast.error(err)
+        })
+        handleClose()
+        isCheckDelete(false)
     }
     return (
         <>
             <div className='fixed top-6 right-3'>
-                <Button variant="danger" onClick={handleShow}>Delete All</Button>
+                <Button variant="danger" onClick={handleShow} disabled={checkDisable()}>Delete All</Button>
             </div>
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>

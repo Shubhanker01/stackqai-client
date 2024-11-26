@@ -1,9 +1,9 @@
 import { toast } from "react-toastify"
 import Modal from 'react-bootstrap/Modal';
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Button from "react-bootstrap/esm/Button";
 
-const Delete = ({ id, checkDelete, isCheckDelete }) => {
+const Delete = ({ id, isCheckDelete }) => {
     const [show, setShow] = useState(false)
     const handleClose = () => setShow(false)
     const handleShow = () => setShow(true)

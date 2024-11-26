@@ -43,8 +43,8 @@ export default function History() {
     return (
         <>
             <Sidebar />
-            <Searchbar search={search} setSearch={setSearch} searchState={searchState} setSearchState={setSearchState} />
-            <DeleteAll />
+            <Searchbar search={search} setSearch={setSearch} setSearchState={setSearchState} length={items.length} />
+            <DeleteAll isCheckDelete={isCheckDelete} length={items.length} />
             <div className="fixed w-[80%] top-[70px] h-[80%] left-[100px] overflow-auto lg:left-[250px] lg:top-[100px]">
                 <div className="pt-2 relative mx-auto text-gray-600">
                     {
