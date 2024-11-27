@@ -4,7 +4,7 @@ import Button from 'react-bootstrap/esm/Button'
 import Modal from 'react-bootstrap/Modal'
 import { ToastContainer, toast } from "react-toastify"
 
-function Select({ noOfSelection, ids }) {
+function Select({ noOfSelection, ids, isCheckDelete }) {
     const [show, setShow] = useState(false)
     const handleShow = () => {
         if (show === false) {
@@ -39,15 +39,16 @@ function Select({ noOfSelection, ids }) {
     }
     const handleDelete = () => {
         deleteMul().then((res) => {
-            // toast.success(res, { position: 'top-center' })
-            alert(res)
+            toast.success(res, { position: 'top-center' })
+            isCheckDelete(true)
+            setShow(false)
         }).catch((err) => {
             console.log(err)
         })
+        isCheckDelete(false)
     }
     return (
         <>
-            <ToastContainer />
             <Alert variant='success'>
                 <Alert.Heading>
                     Selected {noOfSelection} items

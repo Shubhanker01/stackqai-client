@@ -64,7 +64,7 @@ export default function History() {
 
                                     </> :
                                         <>
-                                            <Results search={search} items={items} />
+                                            <Results search={search} items={items} isCheckDelete={isCheckDelete} checkDelete={checkDelete} />
                                         </>
                                 }
 
