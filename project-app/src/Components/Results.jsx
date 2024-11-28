@@ -9,12 +9,14 @@ function Results({ search, items, isCheckDelete, checkDelete }) {
   const [results, setResults] = useState([])
   let [noOfSelection, setNoOfSelection] = useState(0)
   let [ids, selectedIds] = useState([])
+  let [resultDelete, checkResultDelete] = useState(false)
 
   useEffect(() => {
     let arr = flattenJson(items)
     let filterRes = filterSearch(search, arr)
     setResults(filterRes)
-  }, [search, checkDelete])
+    console.log("hello")
+  }, [search,items])
 
   return (
     <>
@@ -25,7 +27,7 @@ function Results({ search, items, isCheckDelete, checkDelete }) {
         {
           noOfSelection !== 0 ?
             <div>
-              <Select noOfSelection={noOfSelection} ids={ids} isCheckDelete={isCheckDelete}></Select>
+              <Select noOfSelection={noOfSelection} ids={ids} checkResultDelete={checkResultDelete}></Select>
             </div> :
             <div></div>
         }

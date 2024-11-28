@@ -2,9 +2,9 @@ import React, { useState } from 'react'
 import Alert from 'react-bootstrap/Alert'
 import Button from 'react-bootstrap/esm/Button'
 import Modal from 'react-bootstrap/Modal'
-import { ToastContainer, toast } from "react-toastify"
+import { toast } from "react-toastify"
 
-function Select({ noOfSelection, ids, isCheckDelete }) {
+function Select({ noOfSelection, ids, checkResultDelete }) {
     const [show, setShow] = useState(false)
     const handleShow = () => {
         if (show === false) {
@@ -40,12 +40,12 @@ function Select({ noOfSelection, ids, isCheckDelete }) {
     const handleDelete = () => {
         deleteMul().then((res) => {
             toast.success(res, { position: 'top-center' })
-            isCheckDelete(true)
+            checkResultDelete(true)
             setShow(false)
         }).catch((err) => {
             console.log(err)
         })
-        isCheckDelete(false)
+        checkResultDelete(false)
     }
     return (
         <>
