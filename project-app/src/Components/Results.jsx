@@ -15,8 +15,7 @@ function Results({ search, items, isCheckDelete, checkDelete }) {
     let arr = flattenJson(items)
     let filterRes = filterSearch(search, arr)
     setResults(filterRes)
-    console.log("hello")
-  }, [search,items])
+  }, [search])
 
   return (
     <>
@@ -36,7 +35,7 @@ function Results({ search, items, isCheckDelete, checkDelete }) {
             return <Card key={obj._id}>
               <Card.Body>
                 <div className='flex mb-2'>
-                  <Checkbox id={obj._id} setNoOfSelection={setNoOfSelection} noOfSelection={noOfSelection} selectedIds={selectedIds} ids={ids} />
+                  <Checkbox id={obj._id} ids={ids} selectedIds={selectedIds}/>
                   <Card.Subtitle className='pt-[3px] pl-[5px]'>{obj.date}</Card.Subtitle>
                 </div>
 

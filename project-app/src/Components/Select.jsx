@@ -40,12 +40,10 @@ function Select({ noOfSelection, ids, checkResultDelete }) {
     const handleDelete = () => {
         deleteMul().then((res) => {
             toast.success(res, { position: 'top-center' })
-            checkResultDelete(true)
             setShow(false)
         }).catch((err) => {
             console.log(err)
         })
-        checkResultDelete(false)
     }
     return (
         <>
