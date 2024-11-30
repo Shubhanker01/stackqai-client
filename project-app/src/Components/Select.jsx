@@ -4,7 +4,7 @@ import Button from 'react-bootstrap/esm/Button'
 import Modal from 'react-bootstrap/Modal'
 import { toast } from "react-toastify"
 
-function Select({ noOfSelection, ids, checkResultDelete }) {
+function Select({ noOfSelection, ids, isDeleted,isCheckDelete }) {
     const [show, setShow] = useState(false)
     const handleShow = () => {
         if (show === false) {
@@ -41,15 +41,17 @@ function Select({ noOfSelection, ids, checkResultDelete }) {
         deleteMul().then((res) => {
             toast.success(res, { position: 'top-center' })
             setShow(false)
+            isCheckDelete(true)
         }).catch((err) => {
             console.log(err)
         })
+        isCheckDelete(false)
     }
     return (
         <>
             <Alert variant='success'>
                 <Alert.Heading>
-                    Selected {noOfSelection} items
+                    Selected {ids.length} items
                 </Alert.Heading>
                 <Button variant="secondary" onClick={handleShow}>
                     <img width="25" height="25" src="https://img.icons8.com/ios-glyphs/30/filled-trash.png" alt="filled-trash" />
@@ -59,7 +61,7 @@ function Select({ noOfSelection, ids, checkResultDelete }) {
                 <Modal.Header closeButton>
                     <Modal.Title>Delete Items</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>Are you sure you want to delete {noOfSelection} items</Modal.Body>
+                <Modal.Body>Are you sure you want to delete {ids.length} items</Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={() => { setShow(false) }}>
                         Close

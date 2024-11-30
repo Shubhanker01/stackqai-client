@@ -9,13 +9,13 @@ function Results({ search, items, isCheckDelete, checkDelete }) {
   const [results, setResults] = useState([])
   let [noOfSelection, setNoOfSelection] = useState(0)
   let [ids, selectedIds] = useState([])
-  let [resultDelete, checkResultDelete] = useState(false)
+  // let [deleted, isDeleted] = useState(false)
 
   useEffect(() => {
     let arr = flattenJson(items)
     let filterRes = filterSearch(search, arr)
     setResults(filterRes)
-  }, [search])
+  }, [search, checkDelete, results.length])
 
   return (
     <>
@@ -24,9 +24,9 @@ function Results({ search, items, isCheckDelete, checkDelete }) {
       </Card>
       <div>
         {
-          noOfSelection !== 0 ?
+          ids.length !== 0 ?
             <div>
-              <Select noOfSelection={noOfSelection} ids={ids} checkResultDelete={checkResultDelete}></Select>
+              <Select noOfSelection={noOfSelection} ids={ids} isCheckDelete={isCheckDelete}></Select>
             </div> :
             <div></div>
         }
@@ -35,7 +35,7 @@ function Results({ search, items, isCheckDelete, checkDelete }) {
             return <Card key={obj._id}>
               <Card.Body>
                 <div className='flex mb-2'>
-                  <Checkbox id={obj._id} ids={ids} selectedIds={selectedIds}/>
+                  <Checkbox id={obj._id} ids={ids} selectedIds={selectedIds} />
                   <Card.Subtitle className='pt-[3px] pl-[5px]'>{obj.date}</Card.Subtitle>
                 </div>
 
