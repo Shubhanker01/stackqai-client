@@ -15,7 +15,7 @@ function Results({ search, items, isCheckDelete, checkDelete }) {
     let arr = flattenJson(items)
     let filterRes = filterSearch(search, arr)
     setResults(filterRes)
-  }, [search, checkDelete, results.length])
+  }, [search,ids])
 
   return (
     <>
@@ -26,7 +26,7 @@ function Results({ search, items, isCheckDelete, checkDelete }) {
         {
           ids.length !== 0 ?
             <div>
-              <Select noOfSelection={noOfSelection} ids={ids} isCheckDelete={isCheckDelete}></Select>
+              <Select noOfSelection={noOfSelection} ids={ids} isCheckDelete={isCheckDelete} selectedIds={selectedIds}></Select>
             </div> :
             <div></div>
         }
