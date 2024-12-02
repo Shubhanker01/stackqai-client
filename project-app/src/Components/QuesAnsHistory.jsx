@@ -2,12 +2,12 @@ import React, { useEffect } from 'react'
 import Card from 'react-bootstrap/Card';
 import Delete from './Delete';
 
-function QuesAnsHistory(props) {
+function QuesAnsHistory({ data }) {
 
     return (
         <>
             {
-                props.data.map((item) => {
+                data.map((item) => {
                     return <Card key={item._id}>
                         <Card.Body>
                             <Card.Subtitle>
@@ -19,7 +19,7 @@ function QuesAnsHistory(props) {
                             <Card.Text>
                                 {item.time}
                             </Card.Text>
-                            <Delete id={item._id} checkDelete={props.checkDelete} isCheckDelete={props.isCheckDelete} />
+                            <Delete id={item._id} />
                         </Card.Body>
                     </Card>
                 })

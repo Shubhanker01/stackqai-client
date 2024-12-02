@@ -5,7 +5,7 @@ import { jwtDecode } from 'jwt-decode'
 import { getCookieVal } from '../Utilities/getCookieVal';
 import { toast } from 'react-toastify'
 
-function DeleteAll({ isCheckDelete, length }) {
+function DeleteAll({ getItems, length }) {
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -41,12 +41,11 @@ function DeleteAll({ isCheckDelete, length }) {
         const token = jwtDecode(cookie)
         deleteAllApi(token.id).then((res) => {
             toast.success(res, { position: 'top-center' })
-            isCheckDelete(true)
+            getItems([])
         }).catch((err) => {
             toast.error(err)
         })
         handleClose()
-        isCheckDelete(false)
     }
     return (
         <>
