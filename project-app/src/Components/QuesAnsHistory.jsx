@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import Card from 'react-bootstrap/Card';
 import Delete from './Delete';
 
-function QuesAnsHistory({ data }) {
+function QuesAnsHistory({ data, items,getItems }) {
 
     return (
         <>
@@ -19,7 +19,7 @@ function QuesAnsHistory({ data }) {
                             <Card.Text>
                                 {item.time}
                             </Card.Text>
-                            <Delete id={item._id} />
+                            <Delete id={item._id} items={items} getItems={getItems}/>
                         </Card.Body>
                     </Card>
                 })

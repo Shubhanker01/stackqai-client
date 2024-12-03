@@ -44,7 +44,7 @@ export default function History() {
         <>
             <Sidebar />
             <Searchbar search={search} setSearch={setSearch} setSearchState={setSearchState} length={items.length} />
-            <DeleteAll isCheckDelete={isCheckDelete} length={items.length} getItems={getItems}/>
+            <DeleteAll isCheckDelete={isCheckDelete} length={items.length} getItems={getItems} />
             <div className="fixed w-[80%] top-[70px] h-[80%] left-[100px] overflow-auto lg:left-[250px] lg:top-[100px]">
                 <div className="pt-2 relative mx-auto text-gray-600">
                     {
@@ -57,14 +57,14 @@ export default function History() {
                                             items.map((item) => {
                                                 return <div key={item.key} className="mb-4">
                                                     <Showdate date={item.date} />
-                                                    <QuesAnsHistory data={item.arr} checkDelete={checkDelete} isCheckDelete={isCheckDelete} />
+                                                    <QuesAnsHistory data={item.arr} checkDelete={checkDelete} isCheckDelete={isCheckDelete} items={items} getItems={getItems} />
                                                 </div>
                                             })
                                         }
 
                                     </> :
                                         <>
-                                            <Results search={search} items={items} isCheckDelete={isCheckDelete} checkDelete={checkDelete}/>
+                                            <Results search={search} items={items} isCheckDelete={isCheckDelete} checkDelete={checkDelete} />
                                         </>
                                 }
 

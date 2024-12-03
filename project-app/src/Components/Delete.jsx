@@ -3,7 +3,7 @@ import Modal from 'react-bootstrap/Modal';
 import { useState } from "react";
 import Button from "react-bootstrap/esm/Button";
 
-const Delete = ({ id, isCheckDelete }) => {
+const Delete = ({ id, items, getItems }) => {
     const [show, setShow] = useState(false)
     const handleClose = () => setShow(false)
     const handleShow = () => setShow(true)
@@ -25,6 +25,7 @@ const Delete = ({ id, isCheckDelete }) => {
         deleteChat().then((res) => {
             toast.success(res, { position: 'top-center' })
             isCheckDelete(true)
+            getItems(items)
         }).catch((err) => {
             toast.error(err, { position: 'top-center' })
         })
