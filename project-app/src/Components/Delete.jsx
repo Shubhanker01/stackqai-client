@@ -24,13 +24,11 @@ const Delete = ({ id, items, getItems }) => {
     const deleteModal = () => {
         deleteChat().then((res) => {
             toast.success(res, { position: 'top-center' })
-            isCheckDelete(true)
             getItems(items)
         }).catch((err) => {
             toast.error(err, { position: 'top-center' })
         })
         handleClose()
-        isCheckDelete(false)
     }
     return (
         <>

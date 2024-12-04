@@ -5,17 +5,17 @@ import { flattenJson } from '../Utilities/flattenJson';
 import Checkbox from './Checkbox';
 import Select from './Select';
 
-function Results({ search, items, isCheckDelete, checkDelete }) {
+function Results({ search, items }) {
   const [results, setResults] = useState([])
   let [noOfSelection, setNoOfSelection] = useState(0)
   let [ids, selectedIds] = useState([])
-  // let [deleted, isDeleted] = useState(false)
+
 
   useEffect(() => {
     let arr = flattenJson(items)
     let filterRes = filterSearch(search, arr)
     setResults(filterRes)
-  }, [search,ids])
+  }, [search])
 
   return (
     <>
@@ -26,7 +26,7 @@ function Results({ search, items, isCheckDelete, checkDelete }) {
         {
           ids.length !== 0 ?
             <div>
-              <Select noOfSelection={noOfSelection} ids={ids} isCheckDelete={isCheckDelete} selectedIds={selectedIds}></Select>
+              <Select noOfSelection={noOfSelection} ids={ids} selectedIds={selectedIds} filterResults={results} setResults={setResults}></Select>
             </div> :
             <div></div>
         }

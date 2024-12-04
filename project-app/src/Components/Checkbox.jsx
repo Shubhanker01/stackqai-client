@@ -7,10 +7,6 @@ function Checkbox({ id, ids, selectedIds  }) {
     useEffect(() => {
         if (check) {
             selectedIds([...ids, id])
-            // if (deleted == true) {
-            //     selectedIds(ids.filter(currid => currid != id))
-            //     isDeleted(false)
-            // }
         }
         else {
             if (ids.length !== 0) {

@@ -3,8 +3,9 @@ import Alert from 'react-bootstrap/Alert'
 import Button from 'react-bootstrap/esm/Button'
 import Modal from 'react-bootstrap/Modal'
 import { toast } from "react-toastify"
+import { produce } from "immer"
 
-function Select({ noOfSelection, ids, selectedIds }) {
+function Select({ noOfSelection, ids, filterResults, setResults, selectedIds }) {
     const [show, setShow] = useState(false)
     const handleShow = () => {
         if (show === false) {
@@ -41,10 +42,25 @@ function Select({ noOfSelection, ids, selectedIds }) {
         deleteMul().then((res) => {
             toast.success(res, { position: 'top-center' })
             setShow(false)
+            // delete by id
+            const deleteItems = produce(filterResults, draft => {
+                const indexes = ids
+                for (let i = 0; i < indexes.length; i++) {
+                    let index = indexes[i]
+                    let findIndex = draft.find((item) => item._id === index)
+                    if (findIndex !== -1) {
+                        draft.splice(findIndex, 1)
+                    }
+                }
+                return draft
+            })
+            selectedIds([])
+            setResults(deleteItems)
+
         }).catch((err) => {
             console.log(err)
         })
-        
+
 
     }
     return (
