@@ -5,7 +5,7 @@ import Modal from 'react-bootstrap/Modal'
 import { toast } from "react-toastify"
 import { produce } from "immer"
 
-function Select({ noOfSelection, ids, filterResults, setResults, selectedIds }) {
+function Select({ noOfSelection, ids, filterResults, setResults, selectedIds, items, getItems }) {
     const [show, setShow] = useState(false)
     const handleShow = () => {
         if (show === false) {
@@ -55,8 +55,23 @@ function Select({ noOfSelection, ids, filterResults, setResults, selectedIds }) 
                 return draft
             })
             selectedIds([])
-            setResults(deleteItems)
 
+            setResults(deleteItems)
+            // let deletedItems = produce(items, draft => {
+            //     ids.map((id) => {
+            //         draft.arr.map((item) => {
+            //             if (item.arr.length !== 0) {
+            //                 let ind = item.arr.findIndex((obj) => obj._id === id)
+            //                 if (ind !== -1) {
+            //                     item.arr.splice(ind, 1)
+            //                 }
+            //             }
+            //         })
+            //     })
+
+            // }
+            // )
+            // getItems(deletedItems)
         }).catch((err) => {
             console.log(err)
         })
