@@ -37,7 +37,7 @@ export default function History() {
         getHistory().then((res) => {
             getItems(res)
         }).catch(err => console.log(err))
-    }, [])
+    }, [search])
 
 
     return (
@@ -56,15 +56,22 @@ export default function History() {
                                         {
                                             items.map((item) => {
                                                 return <div key={item.key} className="mb-4">
-                                                    <Showdate date={item.date} />
-                                                    <QuesAnsHistory data={item.arr} checkDelete={checkDelete} isCheckDelete={isCheckDelete} items={items} getItems={getItems} />
+                                                    {
+                                                        item.arr !== 0 ? <>
+                                                            <Showdate date={item.date} />
+                                                            <QuesAnsHistory data={item.arr} checkDelete={checkDelete} isCheckDelete={isCheckDelete} items={items} getItems={getItems} />
+                                                        </> :
+                                                            <>
+                                                                <p>Nothing to Show</p>
+                                                            </>
+                                                    }
                                                 </div>
                                             })
                                         }
 
                                     </> :
                                         <>
-                                            <Results search={search} items={items} getItems={getItems}/>
+                                            <Results search={search} items={items} getItems={getItems} />
                                         </>
                                 }
 

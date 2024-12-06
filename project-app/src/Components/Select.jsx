@@ -57,21 +57,21 @@ function Select({ noOfSelection, ids, filterResults, setResults, selectedIds, it
             selectedIds([])
 
             setResults(deleteItems)
-            // let deletedItems = produce(items, draft => {
-            //     ids.map((id) => {
-            //         draft.arr.map((item) => {
-            //             if (item.arr.length !== 0) {
-            //                 let ind = item.arr.findIndex((obj) => obj._id === id)
-            //                 if (ind !== -1) {
-            //                     item.arr.splice(ind, 1)
-            //                 }
-            //             }
-            //         })
-            //     })
+            let deletedItems = produce(items, draft => {
+                ids.map((id) => {
+                    draft.map((item) => {
+                        if (item.arr.length !== 0) {
+                            let ind = item.arr.findIndex((obj) => obj._id === id)
+                            if (ind !== -1) {
+                                item.arr.splice(ind, 1)
+                            }
+                        }
+                    })
+                })
 
-            // }
-            // )
-            // getItems(deletedItems)
+            }
+            )
+            getItems(deletedItems)
         }).catch((err) => {
             console.log(err)
         })

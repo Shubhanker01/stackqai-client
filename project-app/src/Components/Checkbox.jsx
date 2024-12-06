@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Form from 'react-bootstrap/Form';
 
-function Checkbox({ id, ids, selectedIds  }) {
+function Checkbox({ id, ids, selectedIds }) {
     const [check, isChecked] = useState(false)
 
     useEffect(() => {

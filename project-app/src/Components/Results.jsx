@@ -5,7 +5,7 @@ import { flattenJson } from '../Utilities/flattenJson';
 import Checkbox from './Checkbox';
 import Select from './Select';
 
-function Results({ search, items,getItems }) {
+function Results({ search, items, getItems }) {
   const [results, setResults] = useState([])
   let [noOfSelection, setNoOfSelection] = useState(0)
   let [ids, selectedIds] = useState([])
@@ -19,7 +19,6 @@ function Results({ search, items,getItems }) {
 
   return (
     <>
-      {/* {console.log(results)} */}
       <Card>
         <Card.Title className='p-2'>Found {results.length} results for "{search}"</Card.Title>
       </Card>
