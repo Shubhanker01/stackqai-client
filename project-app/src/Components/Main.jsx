@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import UserChat from "./UserChat"
 import Intro from "./Intro"
 import Chatbot from "./Chatbot"
@@ -17,11 +17,29 @@ export default function Main() {
     const [question, setQuestion] = useState("")
     const [formatQues, setFormatQues] = useState("")
     const [arr, setArr] = useState([])
+    const [cacheArr, getCacheArr] = useState([])
     const [state, setState] = useState(false)
     const [disabled, isDisabled] = useState(true)
     const cookies = new Cookies()
     const decoded = jwtDecode(cookies.get('token'))
 
+    useEffect(() => {
+        const cache = async () => {
+            let headersList = {
+                "Accept": "*/*"
+            }
+            let response = await fetch("http://localhost:9000/ques/getcache", {
+                method: "GET",
+                headers: headersList
+            });
+
+            let data = await response.json();
+            return data;
+        }
+        cache().then((res) => {
+            getCacheArr(res)
+        })
+    }, [])
     const getAPI = async () => {
         let headersList = {
             "Accept": "*/*",
@@ -86,6 +104,7 @@ export default function Main() {
 
     return (
         <>
+            {console.log(cacheArr)}
             <div className="w-full bg-gray-50 h-screen">
                 <Sidebar />
 
