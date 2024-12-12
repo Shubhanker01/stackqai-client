@@ -4,34 +4,11 @@ import logo from '/stackQAI/Frontend/project-app/src/icons8-dots-loading.gif'
 export default function Chatbot(props) {
     const [loader, setLoader] = useState(props.loader)
 
-    // const saveQues = async () => {
-    //     let headersList = {
-    //         "Accept": "*/*",
-    //         "Content-Type": "application/json"
-    //     }
-    //     let bodyContent = JSON.stringify({
-    //         "email": props.email,
-    //         "question": props.ques,
-    //         "answer": props.answer
-    //     })
-    //     let response = await fetch("http://localhost:9000/ques", {
-    //         method: 'POST',
-    //         headers: headersList,
-    //         body: bodyContent
-    //     })
-    //     let data = await response.text()
-    //     return data
-    // }
-
     useEffect(() => {
         if (props.answer != "") {
             setLoader(false)
         }
     }, [loader,props.answer])
-
-    // useEffect(()=>{
-    //     console.log("I got called")
-    // },[])
 
     return (
         <>

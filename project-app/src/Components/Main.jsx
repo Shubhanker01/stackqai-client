@@ -8,6 +8,7 @@ import { jwtDecode } from "jwt-decode"
 import Logout from "./Logout"
 import Sidebar from "./Sidebar"
 import { convertToNewString } from "../Utilities/newstring"
+import { v4 as uuidv4 } from 'uuid';
 
 let id = 0
 let quesid = 10000
@@ -93,7 +94,7 @@ export default function Main() {
     }
 
     const handleClick = () => {
-        setArr([...arr, { id: id, ques: question, quesid: quesid, ansid: ansid, ans: "" }])
+        setArr([...arr, { id: uuidv4(), ques: question, quesid: quesid, ansid: ansid, ans: "" }])
         getAPI().then(res => saveQues(res)).then(() => {
             console.log("Successfully saved")
         }).catch(err => console.log(err))
@@ -104,7 +105,6 @@ export default function Main() {
 
     return (
         <>
-            {console.log(cacheArr)}
             <div className="w-full bg-gray-50 h-screen">
                 <Sidebar />
 
@@ -135,7 +135,7 @@ export default function Main() {
 
                 <div className="">
                     {
-                        state == false ?
+                        (state == false && cacheArr.length===0) ?
                             <div className="transition duration-300 ease-in-out">
                                 <Intro></Intro>
                             </div>
@@ -143,10 +143,18 @@ export default function Main() {
                             <div className="">
                                 <ul className="absolute top-[100px] left-[80px] w-[80%] h-[70%] flex flex-col overflow-auto  scroll-auto lg:left-[180px] z-0" id="chatbox">
                                     {
+                                        cacheArr.map((obj)=>{
+                                            return <li key={obj.id}>
+                                             <UserChat chat={obj.question}></UserChat>
+                                             <Chatbot loader={false} answer={obj.answer}></Chatbot>
+                                            </li>
+                                        })
+                                    }
+                                    {
                                         arr.map((ques) => (
                                             <li key={ques.id} className="relative mb-[25px]">
                                                 <UserChat key={ques.quesid} chat={ques.ques}></UserChat>
-                                                <Chatbot key={ques.ansid} loader={true} ques={ques.ques} answer={ques.ans} email={decoded.email}></Chatbot>
+                                                <Chatbot key={ques.ansid} loader={true} answer={ques.ans}></Chatbot>
                                             </li>
 
                                         ))
