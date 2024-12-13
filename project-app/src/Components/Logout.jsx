@@ -10,9 +10,24 @@ export default function Logout() {
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+
+    const clearCache = async () => {
+        let headersList = {
+            "Accept": "*/*"
+        }
+        let response = await fetch("http://localhost:9000/ques/clearcache", {
+            method: "GET",
+            headers: headersList
+        });
+
+        let data = await response.text();
+        console.log(data);
+    }
+    
     const logout = () => {
         const cookie = new Cookies()
         cookie.remove('token')
+        clearCache()
         navigate('/')
     }
 

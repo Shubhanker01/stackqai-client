@@ -10,10 +10,6 @@ import Sidebar from "./Sidebar"
 import { convertToNewString } from "../Utilities/newstring"
 import { v4 as uuidv4 } from 'uuid';
 
-let id = 0
-let quesid = 10000
-let ansid = 30000
-
 export default function Main() {
     const [question, setQuestion] = useState("")
     const [formatQues, setFormatQues] = useState("")
@@ -41,7 +37,7 @@ export default function Main() {
             getCacheArr(res)
         })
     }, [])
-    const getAPI = async () => {
+    const getAPI = async (id) => {
         let headersList = {
             "Accept": "*/*",
             "Content-Type": "application/json"
@@ -55,10 +51,7 @@ export default function Main() {
             headers: headersList
         });
         let data = await response.text();
-        setArr([...arr, { id: id++, ques: formatQues, quesid: quesid++, ansid: ansid++, ans: data }])
-        id = id + 1
-        quesid = quesid + 1
-        ansid = ansid + 1
+        setArr([...arr, { id: id, ques: formatQues, ans: data }])
         return data
     }
 
@@ -94,8 +87,9 @@ export default function Main() {
     }
 
     const handleClick = () => {
-        setArr([...arr, { id: uuidv4(), ques: question, quesid: quesid, ansid: ansid, ans: "" }])
-        getAPI().then(res => saveQues(res)).then(() => {
+        let id = uuidv4()
+        setArr([...arr, { id: id, ques: question, ans: "" }])
+        getAPI(id).then(res => saveQues(res)).then(() => {
             console.log("Successfully saved")
         }).catch(err => console.log(err))
         setState(true)
@@ -135,7 +129,7 @@ export default function Main() {
 
                 <div className="">
                     {
-                        (state == false && cacheArr.length===0) ?
+                        (state == false && cacheArr.length === 0) ?
                             <div className="transition duration-300 ease-in-out">
                                 <Intro></Intro>
                             </div>
@@ -143,18 +137,18 @@ export default function Main() {
                             <div className="">
                                 <ul className="absolute top-[100px] left-[80px] w-[80%] h-[70%] flex flex-col overflow-auto  scroll-auto lg:left-[180px] z-0" id="chatbox">
                                     {
-                                        cacheArr.map((obj)=>{
+                                        cacheArr.map((obj) => {
                                             return <li key={obj.id}>
-                                             <UserChat chat={obj.question}></UserChat>
-                                             <Chatbot loader={false} answer={obj.answer}></Chatbot>
+                                                <UserChat chat={obj.question}></UserChat>
+                                                <Chatbot loader={false} answer={obj.answer}></Chatbot>
                                             </li>
                                         })
                                     }
                                     {
                                         arr.map((ques) => (
                                             <li key={ques.id} className="relative mb-[25px]">
-                                                <UserChat key={ques.quesid} chat={ques.ques}></UserChat>
-                                                <Chatbot key={ques.ansid} loader={true} answer={ques.ans}></Chatbot>
+                                                <UserChat chat={ques.ques}></UserChat>
+                                                <Chatbot loader={true} answer={ques.ans}></Chatbot>
                                             </li>
 
                                         ))
