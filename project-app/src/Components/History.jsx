@@ -6,7 +6,7 @@ import Showdate from "./Showdate";
 import QuesAnsHistory from "./QuesAnsHistory";
 import Results from "./Results";
 import DeleteAll from "./DeleteAll";
-
+import PaginationRecord from "./PaginationRecord";
 
 export default function History() {
     const [items, getItems] = useState([])
@@ -14,7 +14,7 @@ export default function History() {
     const [searchState, setSearchState] = useState(false)
     const [checkDelete, isCheckDelete] = useState(false)
     const [currentPage,setCurrentPage] = useState(1)
-    const [recordsPerPage] = useState(1)
+    const [recordsPerPage,setRecordsPerPage] = useState(1)
     const cookies = new Cookies()
 
     const getHistory = async () => {
@@ -41,7 +41,12 @@ export default function History() {
         }).catch(err => console.log(err))
     }, [search])
 
+    // get current posts
+    const indexOfLastRecord = currentPage * recordsPerPage
+    const indexOfFirstRecord = indexOfLastRecord - recordsPerPage
+    const currentRecord = items.slice(indexOfFirstRecord,indexOfLastRecord)
 
+    const paginate = (pageNumber) => setCurrentPage(pageNumber)
     return (
         <>
             <Sidebar />
@@ -56,7 +61,7 @@ export default function History() {
                                 {
                                     search.length === 0 ? <>
                                         {
-                                            items.map((item) => {
+                                            currentRecord.map((item) => {
                                                 return <div key={item.key} className="mb-4">
                                                     {
                                                         item.arr !== 0 ? <>
@@ -69,7 +74,9 @@ export default function History() {
                                                     }
                                                 </div>
                                             })
+                                            
                                         }
+                                        
 
                                     </> :
                                         <>
@@ -81,6 +88,7 @@ export default function History() {
                     }
                 </div>
             </div>
+            <PaginationRecord recordsPerPage={recordsPerPage} totalRecords={items.length} paginate={paginate} currentPage={currentPage}></PaginationRecord>
         </>
     )
 }
