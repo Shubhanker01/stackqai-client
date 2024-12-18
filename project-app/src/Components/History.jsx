@@ -14,7 +14,7 @@ export default function History() {
     const [searchState, setSearchState] = useState(false)
     const [checkDelete, isCheckDelete] = useState(false)
     const [currentPage,setCurrentPage] = useState(1)
-    const [recordsPerPage,setRecordsPerPage] = useState(1)
+    const [recordsPerPage] = useState(2)
     const cookies = new Cookies()
 
     const getHistory = async () => {

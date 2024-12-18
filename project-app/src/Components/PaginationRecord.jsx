@@ -13,7 +13,7 @@ function PaginationRecord({ recordsPerPage, totalRecords, paginate, currentPage 
     }
     return (
         <>
-            <div className='fixed bottom-[10px] left-[100px]'>
+            <div className='fixed bottom-[10px] left-[50%]'>
                 <Pagination>{paginationNumbers}</Pagination>
             </div>
 
