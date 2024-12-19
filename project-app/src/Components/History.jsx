@@ -12,7 +12,7 @@ export default function History() {
     const [items, getItems] = useState([])
     const [search, setSearch] = useState("")
     const [searchState, setSearchState] = useState(false)
-    const [checkDelete, isCheckDelete] = useState(false)
+    // const [checkDelete, isCheckDelete] = useState(false)
     const [currentPage,setCurrentPage] = useState(1)
     const [recordsPerPage] = useState(2)
     const cookies = new Cookies()
@@ -51,7 +51,7 @@ export default function History() {
         <>
             <Sidebar />
             <Searchbar search={search} setSearch={setSearch} setSearchState={setSearchState} length={items.length} />
-            <DeleteAll isCheckDelete={isCheckDelete} length={items.length} getItems={getItems} />
+            <DeleteAll length={items.length} getItems={getItems} />
             <div className="fixed w-[80%] top-[70px] h-[80%] left-[100px] overflow-auto lg:left-[250px] lg:top-[100px]">
                 <div className="pt-2 relative mx-auto text-gray-600">
                     {
@@ -66,7 +66,7 @@ export default function History() {
                                                     {
                                                         item.arr !== 0 ? <>
                                                             <Showdate date={item.date} />
-                                                            <QuesAnsHistory data={item.arr} checkDelete={checkDelete} isCheckDelete={isCheckDelete} items={items} getItems={getItems} />
+                                                            <QuesAnsHistory data={item.arr} items={items} getItems={getItems} itemkey={item.key}/>
                                                         </> :
                                                             <>
                                                                 <p>Nothing to Show</p>

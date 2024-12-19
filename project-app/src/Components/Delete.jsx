@@ -2,8 +2,9 @@ import { toast } from "react-toastify"
 import Modal from 'react-bootstrap/Modal';
 import { useState } from "react";
 import Button from "react-bootstrap/esm/Button";
+import { produce } from "immer";
 
-const Delete = ({ id, items, getItems }) => {
+const Delete = ({ id, items, getItems, itemkey }) => {
     const [show, setShow] = useState(false)
     const handleClose = () => setShow(false)
     const handleShow = () => setShow(true)
@@ -23,8 +24,17 @@ const Delete = ({ id, items, getItems }) => {
 
     const deleteModal = () => {
         deleteChat().then((res) => {
+            // delete by id
+            const deleteItemById = produce(items, draft => {
+                const findItemKey = draft.findIndex(obj => obj.key === itemkey)
+                let itemsArr = draft[findItemKey].arr
+                let findItemsArrIndex = itemsArr.findIndex(obj => obj._id === id)
+                if (index !== -1) draft[findItemKey].arr.splice(findItemsArrIndex, 1)
+                return draft
+            })
+            getItems(deleteItemById)
             toast.success(res, { position: 'top-center' })
-            getItems(items)
+
         }).catch((err) => {
             toast.error(err, { position: 'top-center' })
         })
