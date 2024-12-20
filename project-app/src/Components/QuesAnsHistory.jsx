@@ -3,7 +3,7 @@ import Card from 'react-bootstrap/Card';
 import Delete from './Delete';
 
 function QuesAnsHistory({ data, items, getItems,itemkey }) {
-
+    
     return (
         <>
             {

@@ -47,6 +47,8 @@ export default function History() {
     const currentRecord = items.slice(indexOfFirstRecord,indexOfLastRecord)
 
     const paginate = (pageNumber) => setCurrentPage(pageNumber)
+    // console.log(currentRecord)
+    // console.log(items)
     return (
         <>
             <Sidebar />
@@ -66,7 +68,7 @@ export default function History() {
                                                     {
                                                         item.arr !== 0 ? <>
                                                             <Showdate date={item.date} />
-                                                            <QuesAnsHistory data={item.arr} items={items} getItems={getItems} itemkey={item.key}/>
+                                                            <QuesAnsHistory data={item.arr} items={currentRecord} getItems={getItems} itemkey={item.key}/>
                                                         </> :
                                                             <>
                                                                 <p>Nothing to Show</p>

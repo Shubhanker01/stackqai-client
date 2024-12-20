@@ -24,12 +24,14 @@ const Delete = ({ id, items, getItems, itemkey }) => {
 
     const deleteModal = () => {
         deleteChat().then((res) => {
-            // delete by id
             const deleteItemById = produce(items, draft => {
-                const findItemKey = draft.findIndex(obj => obj.key === itemkey)
-                let itemsArr = draft[findItemKey].arr
-                let findItemsArrIndex = itemsArr.findIndex(obj => obj._id === id)
-                if (index !== -1) draft[findItemKey].arr.splice(findItemsArrIndex, 1)
+                const index = items.findIndex(obj => obj.key === itemkey)
+                let arr = draft[index].arr
+                const findIndex = arr.findIndex(item => item._id === id)
+                draft[index].arr.splice(findIndex, 1)
+                if (draft[index].arr.length === 0) {
+                    draft.splice(index, 1)
+                }
                 return draft
             })
             getItems(deleteItemById)
@@ -40,6 +42,8 @@ const Delete = ({ id, items, getItems, itemkey }) => {
         })
         handleClose()
     }
+
+
     return (
         <>
             <Modal show={show} onHide={handleClose}>
