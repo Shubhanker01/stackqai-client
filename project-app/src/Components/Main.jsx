@@ -43,15 +43,15 @@ export default function Main() {
             "Content-Type": "application/json"
         }
         let bodyContent = JSON.stringify({
-            "ques": formatQues
+            "prompt": formatQues
         });
-        let response = await fetch("http://127.0.0.1:5000/question", {
+        let response = await fetch("http://localhost:9000/api/v1/model/predict", {
             method: "POST",
             body: bodyContent,
             headers: headersList
         });
-        let data = await response.text();
-        setArr([...arr, { id: id, ques: formatQues, ans: data }])
+        let data = await response.json();
+        setArr([...arr, { id: id, ques: formatQues, ans: data.output }])
         return data
     }
 
