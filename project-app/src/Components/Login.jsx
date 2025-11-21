@@ -22,7 +22,7 @@ export default function Login() {
       "password": password
     });
 
-    let response = await fetch("http://localhost:9000/user/login", {
+    let response = await fetch("http://localhost:9000/api/v1/user/login", {
       method: "POST",
       body: bodyContent,
       headers: headersList

@@ -24,7 +24,7 @@ export default function Signup() {
             "password": password
         });
 
-        let response = await fetch("http://localhost:9000/user/signup", {
+        let response = await fetch("http://localhost:9000/api/v1/user/signup", {
             method: "POST",
             body: bodyContent,
             headers: headersList

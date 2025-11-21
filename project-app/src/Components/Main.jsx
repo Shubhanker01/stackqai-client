@@ -9,10 +9,12 @@ import Logout from "./Logout"
 import Sidebar from "./Sidebar"
 import { convertToNewString } from "../Utilities/newstring"
 import { v4 as uuidv4 } from 'uuid';
+import { streamOutput } from "../Async Logic/fetchStreamOutput"
 
 export default function Main() {
     const [question, setQuestion] = useState("")
     const [formatQues, setFormatQues] = useState("")
+    const [answer, setAnswer] = useState("")
     const [arr, setArr] = useState([])
     const [cacheArr, getCacheArr] = useState([])
     const [state, setState] = useState(false)
@@ -38,20 +40,14 @@ export default function Main() {
         })
     }, [])
     const getAPI = async (id) => {
-        let headersList = {
-            "Accept": "*/*",
-            "Content-Type": "application/json"
-        }
-        let bodyContent = JSON.stringify({
-            "prompt": formatQues
-        });
-        let response = await fetch("http://localhost:9000/api/v1/model/predict", {
-            method: "POST",
-            body: bodyContent,
-            headers: headersList
-        });
-        let data = await response.json();
-        setArr([...arr, { id: id, ques: formatQues, ans: data.output }])
+        let data = await streamOutput({ "prompt": formatQues }, setAnswer)
+        console.log(data)
+        setArr(prevQues => prevQues.map(ques => {
+            if (ques.id === id) {
+                return { ...ques, ans: data }
+            }
+            return ques
+        }))
         return data
     }
 
@@ -96,8 +92,9 @@ export default function Main() {
         setQuestion("")
         setFormatQues("")
     }
-
+    console.log(arr)
     return (
+
         <>
             <div className="w-full bg-gray-50 h-screen">
                 <Sidebar />
@@ -136,14 +133,14 @@ export default function Main() {
                             :
                             <div className="">
                                 <ul className="absolute top-[100px] left-[80px] w-[80%] h-[70%] flex flex-col overflow-auto  scroll-auto lg:left-[180px] z-0" id="chatbox">
-                                    {
+                                    {/* {
                                         cacheArr.map((obj) => {
                                             return <li key={obj.id}>
                                                 <UserChat chat={obj.question}></UserChat>
                                                 <Chatbot loader={false} answer={obj.answer}></Chatbot>
                                             </li>
                                         })
-                                    }
+                                    } */}
                                     {
                                         arr.map((ques) => (
                                             <li key={ques.id} className="relative mb-[25px]">
