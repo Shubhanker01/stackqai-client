@@ -14,7 +14,6 @@ import { streamOutput } from "../Async Logic/fetchStreamOutput"
 export default function Main() {
     const [question, setQuestion] = useState("")
     const [formatQues, setFormatQues] = useState("")
-    const [answer, setAnswer] = useState("")
     const [arr, setArr] = useState([])
     const [cacheArr, getCacheArr] = useState([])
     const [state, setState] = useState(false)
@@ -40,14 +39,14 @@ export default function Main() {
         })
     }, [])
     const getAPI = async (id) => {
-        let data = await streamOutput({ "prompt": formatQues }, setAnswer)
-        console.log(data)
-        setArr(prevQues => prevQues.map(ques => {
-            if (ques.id === id) {
-                return { ...ques, ans: data }
-            }
-            return ques
-        }))
+        let data = await streamOutput({ "prompt": formatQues }, (text) => {
+            setArr(prevQues => prevQues.map(ques => {
+                if (ques.id === id) {
+                    return { ...ques, ans: text }
+                }
+                return ques
+            }))
+        })
         return data
     }
 
@@ -92,13 +91,11 @@ export default function Main() {
         setQuestion("")
         setFormatQues("")
     }
-    console.log(arr)
-    return (
 
+    return (
         <>
             <div className="w-full bg-gray-50 h-screen">
                 <Sidebar />
-
                 <div className="">
                     <input type="text" id="search" placeholder="Enter a prompt here" className="fixed left-[85px] bottom-[15px] z-0 rounded-full border-zinc-700 border-2 p-[2px] text-slate-950 placeholder:text-slate-950 text-sm z-0 w-[70%] h-[40px] lg:left-[165px] lg:text-lg lg:w-[80%] lg:h-[55px] lg:p-[4px]" value={question} onChange={handleChange}></input>
                     <button className="fixed right-[9%] bottom-[18px] h-[35px] w-[35px] cursor-pointer z-10 lg:bottom-[25px]" onClick={() => handleClick()} disabled={disabled}>

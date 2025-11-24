@@ -2,7 +2,6 @@ const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
 
 export const streamOutput = async (prompt, cb) => {
     try {
-        console.log(prompt)
         const response = await fetch('http://localhost:9000/api/v1/model/predict', {
             method: 'POST',
             headers: {
