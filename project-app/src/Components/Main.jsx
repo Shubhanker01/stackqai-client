@@ -10,6 +10,7 @@ import Sidebar from "./Sidebar"
 import { convertToNewString } from "../Utilities/newstring"
 import { v4 as uuidv4 } from 'uuid';
 import { streamOutput } from "../Async Logic/fetchStreamOutput"
+import { saveChat } from "../Async Logic/saveChat"
 
 export default function Main() {
     const [question, setQuestion] = useState("")
@@ -22,21 +23,21 @@ export default function Main() {
     const decoded = jwtDecode(cookies.get('token'))
 
     useEffect(() => {
-        const cache = async () => {
-            let headersList = {
-                "Accept": "*/*"
-            }
-            let response = await fetch("http://localhost:9000/ques/getcache", {
-                method: "GET",
-                headers: headersList
-            });
+        // const cache = async () => {
+        //     let headersList = {
+        //         "Accept": "*/*"
+        //     }
+        //     let response = await fetch("http://localhost:9000/ques/getcache", {
+        //         method: "GET",
+        //         headers: headersList
+        //     });
 
-            let data = await response.json();
-            return data;
-        }
-        cache().then((res) => {
-            getCacheArr(res)
-        })
+        //     let data = await response.json();
+        //     return data;
+        // }
+        // cache().then((res) => {
+        //     getCacheArr(res)
+        // })
     }, [])
     const getAPI = async (id) => {
         let data = await streamOutput({ "prompt": formatQues }, (text) => {
@@ -48,25 +49,6 @@ export default function Main() {
             }))
         })
         return data
-    }
-
-    const saveQues = async (answer) => {
-        let headersList = {
-            "Accept": "*/*",
-            "Content-Type": "application/json"
-        }
-        let bodyContent = JSON.stringify({
-            "email": decoded.email,
-            "question": formatQues,
-            "answer": answer
-        })
-        let response = await fetch("http://localhost:9000/ques", {
-            method: 'POST',
-            headers: headersList,
-            body: bodyContent
-        })
-        let data = await response.text()
-        console.log(data)
     }
 
     const handleChange = (e) => {
@@ -81,15 +63,18 @@ export default function Main() {
         }
     }
 
-    const handleClick = () => {
-        let id = uuidv4()
-        setArr([...arr, { id: id, ques: question, ans: "" }])
-        getAPI(id).then(res => saveQues(res)).then(() => {
-            console.log("Successfully saved")
-        }).catch(err => console.log(err))
-        setState(true)
-        setQuestion("")
-        setFormatQues("")
+    const handleClick = async () => {
+        try {
+            let id = uuidv4()
+            setArr([...arr, { id: id, ques: question, ans: "" }])
+            let answer = await getAPI(id)
+            await saveChat(formatQues, answer, cookies.get('token'))
+            setState(true)
+            setQuestion("")
+            setFormatQues("")
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     return (
