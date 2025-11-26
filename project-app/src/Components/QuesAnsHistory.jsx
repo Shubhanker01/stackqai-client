@@ -2,27 +2,13 @@ import React, { useEffect } from 'react'
 import Card from 'react-bootstrap/Card';
 import Delete from './Delete';
 
-function QuesAnsHistory({ data, items, getItems,itemkey }) {
-    
+function QuesAnsHistory({ data, items, getItems, itemkey }) {
+    console.log(data)
+    console.log(items)
     return (
         <>
             {
-                data.map((item) => {
-                    return <Card key={item._id}>
-                        <Card.Body>
-                            <Card.Subtitle>
-                                {item.question}
-                            </Card.Subtitle>
-                            <Card.Text>
-                                {item.answer}
-                            </Card.Text>
-                            <Card.Text>
-                                {item.time}
-                            </Card.Text>
-                            <Delete id={item._id} items={items} getItems={getItems} itemkey={itemkey}/>
-                        </Card.Body>
-                    </Card>
-                })
+                
             }
         </>
     )
