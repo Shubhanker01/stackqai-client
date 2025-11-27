@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import UserChat from "./UserChat"
 import Intro from "./Intro"
 import Chatbot from "./Chatbot"
@@ -11,6 +11,7 @@ import { convertToNewString } from "../Utilities/newstring"
 import { v4 as uuidv4 } from 'uuid';
 import { streamOutput } from "../Async Logic/fetchStreamOutput"
 import { saveChat } from "../Async Logic/saveChat"
+import { getHistory } from "../Async Logic/showHistory"
 
 export default function Main() {
     const [question, setQuestion] = useState("")
@@ -21,24 +22,22 @@ export default function Main() {
     const [disabled, isDisabled] = useState(true)
     const cookies = new Cookies()
     const decoded = jwtDecode(cookies.get('token'))
+    const bottomRef = useRef(null)
 
     useEffect(() => {
-        // const cache = async () => {
-        //     let headersList = {
-        //         "Accept": "*/*"
-        //     }
-        //     let response = await fetch("http://localhost:9000/ques/getcache", {
-        //         method: "GET",
-        //         headers: headersList
-        //     });
-
-        //     let data = await response.json();
-        //     return data;
-        // }
-        // cache().then((res) => {
-        //     getCacheArr(res)
-        // })
+        const fetchHistory = async () => {
+            const data = await getHistory(cookies.get('token'))
+            console.log(data)
+            getCacheArr(data)
+        }
+        fetchHistory()
     }, [])
+
+    useEffect(() => {
+        // scroll to bottom on new message
+        bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
+    }, [arr])
+
     const getAPI = async (id) => {
         let data = await streamOutput({ "prompt": formatQues }, (text) => {
             setArr(prevQues => prevQues.map(ques => {
@@ -66,11 +65,18 @@ export default function Main() {
     const handleClick = async () => {
         try {
             let id = uuidv4()
-            setArr([...arr, { id: id, ques: question, ans: "" }])
+            // mount chat ui first
+            if (!state) {
+                setState(true)
+                setQuestion("")
+                await new Promise(r => setTimeout(r, 0))
+            }
+            // add user question to chat array
+            setArr(prevArr => [...prevArr, { id: id, ques: question, ans: "" }])
+            // start streaming answer from api
             let answer = await getAPI(id)
+            // save chat to database
             await saveChat(formatQues, answer, cookies.get('token'))
-            setState(true)
-            setQuestion("")
             setFormatQues("")
         } catch (error) {
             console.log(error)
@@ -115,14 +121,14 @@ export default function Main() {
                             :
                             <div className="">
                                 <ul className="absolute top-[100px] left-[80px] w-[80%] h-[70%] flex flex-col overflow-auto  scroll-auto lg:left-[180px] z-0" id="chatbox">
-                                    {/* {
-                                        cacheArr.map((obj) => {
-                                            return <li key={obj.id}>
+                                    {
+                                        cacheArr.map((obj) => (
+                                            <li key={obj._id}>
                                                 <UserChat chat={obj.question}></UserChat>
                                                 <Chatbot loader={false} answer={obj.answer}></Chatbot>
                                             </li>
-                                        })
-                                    } */}
+                                        ))
+                                    }
                                     {
                                         arr.map((ques) => (
                                             <li key={ques.id} className="relative mb-[25px]">
@@ -132,6 +138,7 @@ export default function Main() {
 
                                         ))
                                     }
+                                    <div ref={bottomRef}></div>
                                 </ul>
                             </div>
                     }
