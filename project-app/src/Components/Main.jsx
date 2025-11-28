@@ -117,13 +117,14 @@ export default function Main() {
                         (state == false && cacheArr.length === 0) ?
                             <div className="transition duration-300 ease-in-out">
                                 <Intro></Intro>
+
                             </div>
                             :
                             <div className="">
                                 <ul className="absolute top-[100px] left-[80px] w-[80%] h-[70%] flex flex-col overflow-auto  scroll-auto lg:left-[180px] z-0" id="chatbox">
                                     {
                                         cacheArr.map((obj) => (
-                                            <li key={obj._id}>
+                                            <li key={obj._id} className="pb-[25px]">
                                                 <UserChat chat={obj.question}></UserChat>
                                                 <Chatbot loader={false} answer={obj.answer}></Chatbot>
                                             </li>
@@ -131,7 +132,7 @@ export default function Main() {
                                     }
                                     {
                                         arr.map((ques) => (
-                                            <li key={ques.id} className="relative mb-[25px]">
+                                            <li key={ques.id} className="relative pb-[25px]">
                                                 <UserChat chat={ques.ques}></UserChat>
                                                 <Chatbot loader={true} answer={ques.ans}></Chatbot>
                                             </li>

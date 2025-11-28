@@ -8,6 +8,7 @@ import Redirect from './Components/Redirect';
 import Main from './Components/Main';
 import History from './Components/History';
 import { ToastContainer } from 'react-toastify';
+import Conversation from './Components/Conversation';
 
 function App() {
   return (
@@ -19,7 +20,9 @@ function App() {
           <Route path='/login' element={<Login></Login>}></Route>
           <Route path='/signup' element={<Signup></Signup>}></Route>
           <Route path='/redirect' element={<Redirect></Redirect>}></Route>
-          <Route path='/main' element={<Main></Main>}></Route>
+          <Route path='/main' element={<Main></Main>}>
+            <Route path='conversation/:convoId' element={<Conversation />}></Route>
+          </Route>
           <Route path='/history' element={<History></History>}></Route>
         </Routes>
       </Router>

@@ -25,10 +25,12 @@ export default function Sidebar() {
                         {/* <Addchat toggle={toggle}></Addchat>
                             <Settings toggle={toggle}></Settings> */}
                         <div className="mt-[100px] ml-[5px]">
-                            <Link to="/history" className="flex">
+                            {/* <Link to="/history" className="flex">
                                 <img width="32" height="32" src="https://img.icons8.com/ios/32/FFFFFF/time-machine--v1.png" alt="time-machine--v1" />
                                 <p className="text-slate-100 pt-[3px] pl-[5px]">History</p>
-                            </Link>
+                            </Link> */}
+                            <Link to="/main">New Chat</Link>
+                            <Link to="/main/conversation/12345" className="flex">Convo1</Link>
                         </div>
 
                     </div> :
@@ -41,9 +43,11 @@ export default function Sidebar() {
                         {/* <Addchat toggle={toggle}></Addchat>
                             <Settings toggle={toggle}></Settings> */}
                         <div className="mt-[100px] ml-[5px]">
-                            <Link to="/history">
+                            {/* <Link to="/history">
                                 <img width="32" height="32" src="https://img.icons8.com/ios/32/FFFFFF/time-machine--v1.png" alt="time-machine--v1" />
-                            </Link>
+                            </Link> */}
+                            <Link to="/main">New Chat</Link>
+                            <Link to="/main/conversation/12345" className="">Convo1</Link>
                         </div>
                     </div>
             }
