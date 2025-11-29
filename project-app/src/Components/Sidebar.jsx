@@ -1,56 +1,51 @@
 import { useState } from "react"
 import { Link } from "react-router-dom"
+import { Plus, MessageCircleMore } from "lucide-react"
 
 export default function Sidebar() {
-    const [toggle, setToggle] = useState("off")
-    const changeToggle = () => {
-        if (toggle == "off") {
-            setToggle("on")
-        }
-        else {
-            setToggle("off")
-        }
-    }
+    const [open, setOpen] = useState(true)
+
     return (
-        <>
-            {
-                toggle == "on" ?
-                    <div className="fixed top-[0px] left-[0px] w-[150px] cursor-pointer bg-gray-600 h-screen transition-[width] duration-700 z-10 lg:w-[160px]">
-                        <div className="relative left-[10px] top-[10px]" onClick={() => changeToggle()}>
-                            <div className="mb-[3px] w-[25px] h-[5px] bg-yellow-400"></div>
-                            <div className="mb-[3px] w-[25px] h-[5px] bg-yellow-400"></div>
-                            <div className=" w-[25px] h-[5px] bg-yellow-400"></div>
+        <div
+            className={`fixed top-0 left-0 h-screen bg-gray-800 text-white transition-all duration-300 z-10
+            ${open ? "w-60" : "w-24"}`}
+        >
+            {/* Toggle Button */}
+            <div
+                className="p-4 cursor-pointer flex items-center space-x-2"
+                onClick={() => setOpen(!open)}
+            >
+                <div className="space-y-1">
+                    <div className="h-1 w-6 bg-yellow-400"></div>
+                    <div className="h-1 w-6 bg-yellow-400"></div>
+                    <div className="h-1 w-6 bg-yellow-400"></div>
+                </div>
+                {open && <span className="font-semibold text-sm">Menu</span>}
+            </div>
 
-                        </div>
-                        {/* <Addchat toggle={toggle}></Addchat>
-                            <Settings toggle={toggle}></Settings> */}
-                        <div className="mt-[100px] ml-[5px]">
-                            {/* <Link to="/history" className="flex">
-                                <img width="32" height="32" src="https://img.icons8.com/ios/32/FFFFFF/time-machine--v1.png" alt="time-machine--v1" />
-                                <p className="text-slate-100 pt-[3px] pl-[5px]">History</p>
-                            </Link> */}
-                            <Link to="/main">New Chat</Link>
-                            <Link to="/main/conversation/12345" className="flex">Convo1</Link>
-                        </div>
+            {/* Buttons + Conversation List */}
+            <div className="mt-6 px-2">
+                {/* New Chat Button */}
+                <Link
+                    to="/main"
+                    className="flex items-center gap-3 bg-gray-700 hover:bg-gray-600 rounded-lg px-4 py-3 mb-4 transition-all"
+                >
+                    <Plus color="#e5e0e0" />
+                    {open && <span className="text-sm">New Chat</span>}
+                </Link>
 
-                    </div> :
-                    <div className="fixed top-[0px] left-[0px] w-[60px] cursor-pointer bg-gray-600 h-screen transition-[width] duration-700 z-10 lg:w-[70px]">
-                        <div className="relative left-[10px] top-[10px]" onClick={() => changeToggle()}>
-                            <div className="mb-[3px] w-[25px] h-[5px] bg-yellow-400"></div>
-                            <div className="mb-[3px] w-[25px] h-[5px] bg-yellow-400"></div>
-                            <div className=" w-[25px] h-[5px] bg-yellow-400"></div>
-                        </div>
-                        {/* <Addchat toggle={toggle}></Addchat>
-                            <Settings toggle={toggle}></Settings> */}
-                        <div className="mt-[100px] ml-[5px]">
-                            {/* <Link to="/history">
-                                <img width="32" height="32" src="https://img.icons8.com/ios/32/FFFFFF/time-machine--v1.png" alt="time-machine--v1" />
-                            </Link> */}
-                            <Link to="/main">New Chat</Link>
-                            <Link to="/main/conversation/12345" className="">Convo1</Link>
-                        </div>
-                    </div>
-            }
-        </>
+                {/* Conversations */}
+                <div className="mt-4 space-y-2">
+                    {/* Example conversation */}
+                    <Link
+                        to="/main/conversation/12345"
+                        className="flex items-center gap-3 hover:bg-gray-700 rounded-lg px-3 py-2 transition-all"
+                    >
+                        <MessageCircleMore color="#e5e0e0" />
+                        {open && <span>Convo 1</span>}
+                    </Link>
+                </div>
+            </div>
+        </div>
     )
 }
