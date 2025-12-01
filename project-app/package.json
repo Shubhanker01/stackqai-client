@@ -27,7 +27,8 @@
     "react-toastify": "^10.0.5",
     "remark-gfm": "^4.0.1",
     "universal-cookie": "^7.2.0",
-    "uuid": "^11.0.3"
+    "uuid": "^11.0.3",
+    "zustand": "^5.0.9"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",

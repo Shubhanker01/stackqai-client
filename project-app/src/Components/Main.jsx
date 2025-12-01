@@ -12,6 +12,8 @@ import { v4 as uuidv4 } from 'uuid';
 import { streamOutput } from "../Async Logic/fetchStreamOutput"
 import { saveChat } from "../Async Logic/saveChat"
 import { getHistory } from "../Async Logic/showHistory"
+import { fetchConversations } from "../Async Logic/conversationLogic"
+import { useConversationStore } from "../store"
 
 export default function Main() {
     const [question, setQuestion] = useState("")
@@ -30,6 +32,12 @@ export default function Main() {
             console.log(data)
             getCacheArr(data)
         }
+        const getConvos = async () => {
+            const convos = await fetchConversations(cookies.get('token'))
+            console.log(convos)
+            useConversationStore.getState().setConversations(convos)
+        }
+        getConvos()
         fetchHistory()
     }, [])
 

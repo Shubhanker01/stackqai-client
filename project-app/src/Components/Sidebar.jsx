@@ -1,8 +1,10 @@
 import { useState } from "react"
 import { Link } from "react-router-dom"
 import { Plus, MessageCircleMore } from "lucide-react"
+import { useConversationStore } from "../store"
 
 export default function Sidebar() {
+    const conversations = useConversationStore((state) => state.conversations)
     const [open, setOpen] = useState(true)
 
     return (
@@ -36,14 +38,15 @@ export default function Sidebar() {
 
                 {/* Conversations */}
                 <div className="mt-4 space-y-2">
-                    {/* Example conversation */}
-                    <Link
-                        to="/main/conversation/12345"
-                        className="flex items-center gap-3 hover:bg-gray-700 rounded-lg px-3 py-2 transition-all"
-                    >
-                        <MessageCircleMore color="#e5e0e0" />
-                        {open && <span>Convo 1</span>}
-                    </Link>
+                    {
+                        conversations.map((conversation) => (
+                            <Link to={`/main/conversation/${conversation._id}`} key={conversation._id} className="flex items-center gap-3 hover:bg-gray-700 rounded-lg px-3 py-2 transition-all">
+                                <MessageCircleMore color="#e5e0e0" />
+                                {open && <span>{`${conversation.conversation_name.substring(0, 15)}..`}</span>}
+                            </Link>
+                        ))
+                    }
+
                 </div>
             </div>
         </div>
