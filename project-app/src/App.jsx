@@ -21,8 +21,8 @@ function App() {
           <Route path='/signup' element={<Signup></Signup>}></Route>
           <Route path='/redirect' element={<Redirect></Redirect>}></Route>
           <Route path='/main' element={<Main></Main>}>
-            <Route path='conversation/:convoId' element={<Conversation />}></Route>
           </Route>
+          <Route path='/conversation/:convoId' element={<Conversation />}></Route>
           <Route path='/history' element={<History></History>}></Route>
         </Routes>
       </Router>

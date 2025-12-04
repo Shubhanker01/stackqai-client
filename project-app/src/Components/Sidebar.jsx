@@ -40,7 +40,7 @@ export default function Sidebar() {
                 <div className="mt-4 space-y-2">
                     {
                         conversations.map((conversation) => (
-                            <Link to={`/main/conversation/${conversation._id}`} key={conversation._id} className="flex items-center gap-3 hover:bg-gray-700 rounded-lg px-3 py-2 transition-all">
+                            <Link to={`/conversation/${conversation._id}`} key={conversation._id} className="flex items-center gap-3 hover:bg-gray-700 rounded-lg px-3 py-2 transition-all">
                                 <MessageCircleMore color="#e5e0e0" />
                                 {open && <span>{`${conversation.conversation_name.substring(0, 15)}..`}</span>}
                             </Link>
