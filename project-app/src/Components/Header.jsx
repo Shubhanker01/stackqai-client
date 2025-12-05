@@ -9,7 +9,7 @@ function Header() {
     const decoded = jwtDecode(cookies.get('token'))
     return (
         <>
-            <div className="grid grid-cols-2 fixed w-full top-[5px]">
+            <div className="grid grid-cols-2 fixed left-[200px] w-[80%] top-[5px]">
 
                 <div className="flex">
                     <h1 className="font-bold text-md text-[#222426] ml-[80px]  mt-[20px] lg:text-2xl lg:ml-[165px]">StackQ AI</h1>
