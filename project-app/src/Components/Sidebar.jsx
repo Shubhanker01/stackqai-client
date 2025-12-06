@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { Link } from "react-router-dom"
+import { Link, NavLink } from "react-router-dom"
 import { Plus, MessageCircleMore } from "lucide-react"
 import { useConversationStore } from "../store"
 
@@ -7,6 +7,11 @@ export default function Sidebar() {
     const conversations = useConversationStore((state) => state.conversations)
     const [open, setOpen] = useState(true)
 
+    const navLinkStyles = ({ isActive }) => {
+        return {
+            backgroundColor: isActive ? "#4b5563" : ""
+        }
+    }
     return (
         <div
             className={`fixed top-0 left-0 h-screen bg-gray-800 text-white transition-all duration-300 z-10
@@ -28,22 +33,23 @@ export default function Sidebar() {
             {/* Buttons + Conversation List */}
             <div className="mt-6 px-2">
                 {/* New Chat Button */}
-                <Link
+                <NavLink
                     to="/main"
                     className="flex items-center gap-3 bg-gray-700 hover:bg-gray-600 rounded-lg px-4 py-3 mb-4 transition-all"
+                    style={navLinkStyles}
                 >
                     <Plus color="#e5e0e0" />
                     {open && <span className="text-sm">New Chat</span>}
-                </Link>
+                </NavLink>
 
                 {/* Conversations */}
                 <div className="mt-4 space-y-2">
                     {
                         conversations.map((conversation) => (
-                            <Link to={`/conversation/${conversation._id}`} key={conversation._id} className="flex items-center gap-3 hover:bg-gray-700 rounded-lg px-3 py-2 transition-all">
+                            <NavLink to={`/conversation/${conversation._id}`} key={conversation._id} className="flex items-center gap-3 hover:bg-gray-700 rounded-lg px-3 py-2 transition-all" style={navLinkStyles}>
                                 <MessageCircleMore color="#e5e0e0" />
                                 {open && <span>{`${conversation.conversation_name.substring(0, 15)}..`}</span>}
-                            </Link>
+                            </NavLink>
                         ))
                     }
 

@@ -34,3 +34,13 @@ export const createConversation = async (conversationObj, token) => {
         console.log(error)
     }
 }
+
+// fetch a single conversation by id
+export const fetchConversationById = async (id) => {
+    try {
+        const response = await axios.get(`http://localhost:9000/api/v1/conversation/get/${id}`)
+        return response.data.messages
+    } catch (error) {
+        console.log(error)
+    }
+}
