@@ -5,10 +5,15 @@ import Header from './Header'
 import UserChat from './UserChat'
 import Chatbot from './Chatbot'
 import { fetchConversationById } from '../Async Logic/conversationLogic'
+import Input from './Input'
+import { streamOutput } from '../Async Logic/fetchStreamOutput'
+import { v4 as uuidv4 } from 'uuid';
 
 function Coversation() {
     const { convoId } = useParams()
     const [messages, setMessages] = useState([])
+    const [inputDisabled, setInputDisabled] = useState(false)
+
     const bottomRef = useRef(null)
     useEffect(() => {
         const getConversation = async () => {
@@ -20,6 +25,23 @@ function Coversation() {
     useEffect(() => {
         bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
     }, [messages])
+
+    const getAPI = async (id, question) => {
+        let data = await streamOutput({ "prompt": question }, (text) => {
+            setArr(prevQues => prevQues.map(ques => {
+                if (ques.id === id) {
+                    return { ...ques, ans: text }
+                }
+                return ques
+            }))
+        })
+        return data
+    }
+    const handleSubmit = async (question) => {
+        const id = uuidv4()
+        setMessages(prevMessages => [...prevMessages, { _id: id, question: question, answer: "" }])
+        const data = await getAPI(id, question)
+    }
     return (
         <>
             <div className="w-full bg-gray-50 h-screen">
@@ -38,6 +60,7 @@ function Coversation() {
                     }
                     <div ref={bottomRef}></div>
                 </ul>
+                <Input onSend={handleSubmit} disabled={inputDisabled} isDisabled={setInputDisabled}></Input>
             </div>
         </>
     )
