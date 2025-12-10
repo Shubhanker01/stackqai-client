@@ -4,13 +4,15 @@ import Sidebar from './Sidebar'
 import Header from './Header'
 import UserChat from './UserChat'
 import Chatbot from './Chatbot'
-import { fetchConversationById } from '../Async Logic/conversationLogic'
+import { fetchConversationById, addMessageToConversation } from '../Async Logic/conversationLogic'
 import Input from './Input'
 import { streamOutput } from '../Async Logic/fetchStreamOutput'
 import { v4 as uuidv4 } from 'uuid';
+import Cookies from 'universal-cookie'
 
 function Coversation() {
     const { convoId } = useParams()
+    const cookies = new Cookies()
     const [messages, setMessages] = useState([])
     const [inputDisabled, setInputDisabled] = useState(false)
 
@@ -28,9 +30,9 @@ function Coversation() {
 
     const getAPI = async (id, question) => {
         let data = await streamOutput({ "prompt": question }, (text) => {
-            setArr(prevQues => prevQues.map(ques => {
-                if (ques.id === id) {
-                    return { ...ques, ans: text }
+            setMessages(prevQues => prevQues.map(ques => {
+                if (ques._id === id) {
+                    return { ...ques, answer: text }
                 }
                 return ques
             }))
@@ -41,6 +43,9 @@ function Coversation() {
         const id = uuidv4()
         setMessages(prevMessages => [...prevMessages, { _id: id, question: question, answer: "" }])
         const data = await getAPI(id, question)
+        // save the chat to backend
+        const updatedMessages = await addMessageToConversation(convoId, { question: question, answer: data }, cookies.get('token'))
+        console.log(updatedMessages)
     }
     return (
         <>
@@ -53,7 +58,7 @@ function Coversation() {
                         messages.map((chat) => (
                             <li key={chat._id} className="relative pb-[25px]">
                                 <UserChat chat={chat.question}></UserChat>
-                                <Chatbot loader={false} answer={chat.answer}></Chatbot>
+                                <Chatbot loader={true} answer={chat.answer}></Chatbot>
                             </li>
 
                         ))

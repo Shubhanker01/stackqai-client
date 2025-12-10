@@ -1,10 +1,14 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Link, NavLink } from "react-router-dom"
 import { Plus, MessageCircleMore } from "lucide-react"
 import { useConversationStore } from "../store"
 
 export default function Sidebar() {
     const conversations = useConversationStore((state) => state.conversations)
+    // const [conversationId, setConversationId] = useState(null)
+    // useEffect(() => {
+
+    // }, [conversationId])
     const [open, setOpen] = useState(true)
 
     const navLinkStyles = ({ isActive }) => {

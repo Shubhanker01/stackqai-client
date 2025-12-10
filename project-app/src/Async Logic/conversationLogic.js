@@ -44,3 +44,23 @@ export const fetchConversationById = async (id) => {
         console.log(error)
     }
 }
+
+// add message to a conversation
+export const addMessageToConversation = async (id, messageObj, token) => {
+    try {
+        const response = await axios.post(`http://localhost:9000/api/v1/conversation/add/${id}`, {
+            question: messageObj.question,
+            answer: messageObj.answer
+        }, {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        }
+
+        )
+        return response.data.messages
+    } catch (error) {
+        console.log(error)
+    }
+}
