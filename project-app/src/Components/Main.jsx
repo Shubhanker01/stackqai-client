@@ -10,7 +10,7 @@ import { streamOutput } from "../Async Logic/fetchStreamOutput"
 import { saveChat } from "../Async Logic/saveChat"
 import { fetchConversations } from "../Async Logic/conversationLogic"
 import { useConversationStore } from "../store"
-import { createConversation } from "../Async Logic/conversationLogic"
+import { createConversation, addMessageToConversation } from "../Async Logic/conversationLogic"
 import Header from "./Header"
 import Input from "./Input"
 
@@ -18,6 +18,7 @@ export default function Main() {
     const [arr, setArr] = useState([])
     const [cacheArr, getCacheArr] = useState([])
     const [state, setState] = useState(false)
+    const [currentConversationId, setCurrentConversationId] = useState(null)
     const [disabled, isDisabled] = useState(true)
     const cookies = new Cookies()
     const decoded = jwtDecode(cookies.get('token'))
@@ -26,7 +27,6 @@ export default function Main() {
     useEffect(() => {
         const getConvos = async () => {
             const convos = await fetchConversations(cookies.get('token'))
-            console.log(convos)
             useConversationStore.getState().setConversations(convos)
         }
         getConvos()
@@ -64,9 +64,17 @@ export default function Main() {
             // save chat to database
             await saveChat(question, answer, cookies.get('token'))
             setFormatQues("")
-            // create a new conversation
-            let conversation = await createConversation({ conversation_name: question.slice(0, 30), question: question, answer: answer }, cookies.get('token'))
-            console.log(conversation)
+            // create a new conversation only for the first question
+            // check if initial array is empty then create new conversation
+            if (arr.length === 0) {
+                let conversation = await createConversation({ conversation_name: question.slice(0, 30), question: question, answer: answer }, cookies.get('token'))
+                console.log(conversation)
+                setCurrentConversationId(conversation._id)
+            }
+            else {
+                // add message to existing conversation
+                await addMessageToConversation(currentConversationId, { question: question, answer: answer }, cookies.get('token'))
+            }
         } catch (error) {
             console.log(error)
         }

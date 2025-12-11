@@ -9,6 +9,8 @@ import Input from './Input'
 import { streamOutput } from '../Async Logic/fetchStreamOutput'
 import { v4 as uuidv4 } from 'uuid';
 import Cookies from 'universal-cookie'
+import { fetchConversations } from "../Async Logic/conversationLogic"
+import { useConversationStore } from "../store"
 
 function Coversation() {
     const { convoId } = useParams()
@@ -17,13 +19,20 @@ function Coversation() {
     const [inputDisabled, setInputDisabled] = useState(false)
 
     const bottomRef = useRef(null)
+
     useEffect(() => {
-        const getConversation = async () => {
+        const getConvos = async () => {
+            const convos = await fetchConversations(cookies.get('token'))
+            useConversationStore.getState().setConversations(convos)
+        }
+        const getIndividualConversation = async () => {
             const messages = await fetchConversationById(convoId)
             setMessages(messages)
         }
-        getConversation()
+        getConvos()
+        getIndividualConversation()
     }, [convoId])
+
     useEffect(() => {
         bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
     }, [messages])

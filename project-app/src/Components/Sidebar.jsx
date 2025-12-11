@@ -4,13 +4,8 @@ import { Plus, MessageCircleMore } from "lucide-react"
 import { useConversationStore } from "../store"
 
 export default function Sidebar() {
-    const conversations = useConversationStore((state) => state.conversations)
-    // const [conversationId, setConversationId] = useState(null)
-    // useEffect(() => {
-
-    // }, [conversationId])
     const [open, setOpen] = useState(true)
-
+    const conversations = useConversationStore((state) => state.conversations)
     const navLinkStyles = ({ isActive }) => {
         return {
             backgroundColor: isActive ? "#4b5563" : ""
