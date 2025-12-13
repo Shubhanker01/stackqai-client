@@ -11,6 +11,7 @@ export default function Sidebar() {
             backgroundColor: isActive ? "#4b5563" : ""
         }
     }
+
     return (
         <div
             className={`fixed top-0 left-0 h-screen bg-gray-800 text-white transition-all duration-300 z-10
@@ -45,7 +46,7 @@ export default function Sidebar() {
                 <div className="mt-4 space-y-2">
                     {
                         conversations.map((conversation) => (
-                            <NavLink to={`/conversation/${conversation._id}`} key={conversation._id} className="flex items-center gap-3 hover:bg-gray-700 rounded-lg px-3 py-2 transition-all" style={navLinkStyles}>
+                            <NavLink to={`/conversation/${conversation._id}`} key={conversation._id} className="flex items-center gap-3 hover:bg-gray-700 rounded-lg px-3 py-2 transition-all" style={navLinkStyles} title={open ? "" : conversation.conversation_name}>
                                 <MessageCircleMore color="#e5e0e0" />
                                 {open && <span>{`${conversation.conversation_name.substring(0, 15)}..`}</span>}
                             </NavLink>

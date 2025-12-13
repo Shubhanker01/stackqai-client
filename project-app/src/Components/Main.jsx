@@ -63,10 +63,9 @@ export default function Main() {
             let answer = await getAPI(id, question)
             // save chat to database
             await saveChat(question, answer, cookies.get('token'))
-            setFormatQues("")
             // create a new conversation only for the first question
             // check if initial array is empty then create new conversation
-            if (arr.length === 0) {
+            if (currentConversationId === null) {
                 let conversation = await createConversation({ conversation_name: question.slice(0, 30), question: question, answer: answer }, cookies.get('token'))
                 console.log(conversation)
                 setCurrentConversationId(conversation._id)
